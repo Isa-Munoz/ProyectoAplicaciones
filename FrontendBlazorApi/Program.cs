@@ -27,6 +27,11 @@ builder.Services.AddRazorComponents()
      // Aquí se pueden agregar encabezados por defecto si se requiere.
  });
 
+ builder.Services.AddHttpClient("ApiEntregables", cliente =>
+{
+    cliente.BaseAddress = new Uri("http://localhost:5031/"); // URL de tu API
+});
+
 
 
 var app = builder.Build();
