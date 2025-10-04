@@ -3,7 +3,7 @@
   "ManifestType": "Build",
   "Endpoints": [
     {
-      "Route": "FrontendBlazorApi.pik2mds7pg.styles.css",
+      "Route": "FrontendBlazorApi.ccznj10djk.styles.css",
       "AssetFile": "FrontendBlazorApi.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -17,7 +17,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "5948"
+          "Value": "5917"
         },
         {
           "Name": "Content-Type",
@@ -25,21 +25,21 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"YX6CtyAnTDQro4MJvn1NAlBFpYtmflcQxHuk4TvthrM=\""
+          "Value": "\"rOkuZSwS7iwNa5yoK/cmunfF4vx2K2Zv919hdVsaC/M=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 04 Oct 2025 03:29:40 GMT"
+          "Value": "Sat, 04 Oct 2025 04:00:41 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "pik2mds7pg"
+          "Value": "ccznj10djk"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-YX6CtyAnTDQro4MJvn1NAlBFpYtmflcQxHuk4TvthrM="
+          "Value": "sha256-rOkuZSwS7iwNa5yoK/cmunfF4vx2K2Zv919hdVsaC/M="
         },
         {
           "Name": "label",
@@ -62,7 +62,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "5948"
+          "Value": "5917"
         },
         {
           "Name": "Content-Type",
@@ -70,17 +70,17 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"YX6CtyAnTDQro4MJvn1NAlBFpYtmflcQxHuk4TvthrM=\""
+          "Value": "\"rOkuZSwS7iwNa5yoK/cmunfF4vx2K2Zv919hdVsaC/M=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 04 Oct 2025 03:29:40 GMT"
+          "Value": "Sat, 04 Oct 2025 04:00:41 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-YX6CtyAnTDQro4MJvn1NAlBFpYtmflcQxHuk4TvthrM="
+          "Value": "sha256-rOkuZSwS7iwNa5yoK/cmunfF4vx2K2Zv919hdVsaC/M="
         }
       ]
     },
