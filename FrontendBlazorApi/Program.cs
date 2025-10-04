@@ -46,6 +46,10 @@ builder.Services.AddHttpClient("ApiTipoResponsables", cliente =>
     cliente.BaseAddress = new Uri("http://localhost:5031/"); // URL de tu API
 });
 
+builder.Services.AddHttpClient("ApiTipoProyectos", cliente =>
+{
+    cliente.BaseAddress = new Uri("http://localhost:5031/"); // URL de tu API
+});
 
 var app = builder.Build();
 
