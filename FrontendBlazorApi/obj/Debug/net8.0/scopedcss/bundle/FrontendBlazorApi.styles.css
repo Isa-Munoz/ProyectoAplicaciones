@@ -10,7 +10,9 @@ main[b-ihevq7z9pr] {
 }
 
 .sidebar[b-ihevq7z9pr] {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    background-color: var(--bs-primary) !important;
+    color: white;
+    background-image: none !important;
 }
 
 .top-row[b-ihevq7z9pr] {
