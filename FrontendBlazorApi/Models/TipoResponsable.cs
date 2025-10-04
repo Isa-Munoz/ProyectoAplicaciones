@@ -1,6 +1,6 @@
 namespace FrontendBlazorApi.Models
 {
-    public class TipoResponsables
+    public class TipoResponsable
     {
         public int Id { get; set; } 
         public string Titulo { get; set; } = string.Empty;
