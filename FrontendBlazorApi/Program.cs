@@ -32,6 +32,10 @@ builder.Services.AddRazorComponents()
     cliente.BaseAddress = new Uri("http://localhost:5031/"); // URL de tu API
 });
 
+ builder.Services.AddHttpClient("ApiEstados", cliente =>
+{
+    cliente.BaseAddress = new Uri("http://localhost:5031/"); // URL de tu API
+});
 
 
 var app = builder.Build();
