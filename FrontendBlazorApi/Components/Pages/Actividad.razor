@@ -1,0 +1,456 @@
+@page "/actividades"
+
+@using System.Net.Http.Json
+@using FrontendBlazorApi.Models
+@using ActividadModel = FrontendBlazorApi.Models.Actividad
+@using EntregableModel = FrontendBlazorApi.Models.Entregable
+@inject IHttpClientFactory fabricaHttp
+@rendermode InteractiveServer
+
+<PageTitle>Actividades</PageTitle>
+
+<h3>Gestión de Actividades</h3>
+
+<div class="mb-3 d-flex gap-2">
+    <button type="button" class="btn btn-outline-secondary" @onclick="ProbarConexion">Probar conexión</button>
+    <button type="button" class="btn btn-outline-primary" @onclick="CargarActividades">Mostrar todos</button>
+    <button type="button" class="btn btn-outline-dark" @onclick="LimpiarFormulario">Limpiar</button>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(mensaje))
+{
+    <div class="@claseAviso" role="alert">@mensaje</div>
+}
+
+<h4>Formulario de Actividad</h4>
+
+<EditForm Model="ActividadActual" OnValidSubmit="GuardarSegunEstado">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="row g-3">
+        <div class="col-md-2">
+            <label class="form-label">Id</label>
+            <InputNumber class="form-control" @bind-Value="ActividadActual.Id" />
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">Entregable</label>
+            <select class="form-select" @bind="IdEntregableSeleccionado" required>
+                <option value="">--Seleccione un entregable--</option>
+                @foreach (var e in listaEntregables)
+                {
+                    <option value="@e.Id">@($"{e.Codigo} - {e.Titulo}")</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Título</label>
+            <InputText class="form-control" @bind-Value="ActividadActual.Titulo" />
+        </div>
+
+        <div class="col-md-12">
+            <label class="form-label">Descripción</label>
+            <InputTextArea class="form-control" @bind-Value="ActividadActual.Descripcion" rows="3" />
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Fecha Inicio</label>
+            <InputDate class="form-control" @bind-Value="ActividadActual.FechaInicio" />
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Fecha Fin Prevista</label>
+            <InputDate class="form-control" @bind-Value="ActividadActual.FechaFinPrevista" />
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Fecha Modificación</label>
+            <InputDate class="form-control" @bind-Value="ActividadActual.FechaModificacion" />
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Fecha Finalización</label>
+            <InputDate class="form-control" @bind-Value="ActividadActual.FechaFinalizacion" />
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Prioridad</label>
+            <InputText class="form-control" @bind-Value="ActividadActual.Prioridad" />
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Porcentaje Avance</label>
+            <InputText class="form-control" @bind-Value="ActividadActual.PorcentajeAvance" />
+        </div>
+    </div>
+
+    <div class="mt-3 d-flex flex-wrap gap-2">
+        <button type="submit" class="btn btn-primary">@textoBotonGuardar</button>
+        <button type="button" class="btn btn-secondary" @onclick="BuscarPorId">Buscar</button>
+        <button type="button" class="btn btn-warning" @onclick="ActualizarActividad" disabled="@(!existeActividad)">Actualizar</button>
+        <button type="button" class="btn btn-danger" @onclick="EliminarActividad" disabled="@(!existeActividad)">Eliminar</button>
+    </div>
+</EditForm>
+
+<hr />
+
+@if (cargando)
+{
+    <p><em>Cargando Actividades...</em></p>
+}
+else if (listaActividades.Count == 0)
+{
+    <p>No hay Actividades disponibles.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Entregable</th>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Fin Prevista</th>
+                <th>Fecha Modificación</th>
+                <th>Fecha Finalización</th>
+                <th>Prioridad</th>
+                <th>Porcentaje Avance</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in listaActividades)
+            {
+                <tr>
+                    <td>@a.Id</td>
+                    <td>@(a.IdEntregable != null ? $"{a.IdEntregable.Codigo} - {a.IdEntregable.Titulo}" : "")</td>
+                    <td>@a.Titulo</td>
+                    <td>@a.Descripcion</td>
+                    <td>@a.FechaInicio?.ToString("yyyy-MM-dd")</td>
+                    <td>@a.FechaFinPrevista?.ToString("yyyy-MM-dd")</td>
+                    <td>@a.FechaModificacion?.ToString("yyyy-MM-dd")</td>
+                    <td>@a.FechaFinalizacion?.ToString("yyyy-MM-dd")</td>
+                    <td>@a.Prioridad</td>
+                    <td>@a.PorcentajeAvance</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-outline-primary" @onclick="@(() => CargarEnFormulario(a))">Cargar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<ActividadModel> listaActividades = new();
+    private List<EntregableModel> listaEntregables = new();
+
+    private ActividadModel ActividadActual { get; set; } = new();
+    private int? IdEntregableSeleccionado { get; set; }
+
+    private bool existeActividad = false;
+    private string textoBotonGuardar = "Crear";
+    private string mensaje = "";
+    private string claseAviso = "alert alert-info";
+    private bool cargando = false;
+
+    private const string urlApiActividad = "api/Actividad";
+    private const string urlApiEntregable = "api/Entregable";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarEntregables();
+        await CargarActividades();
+    }
+
+    private async Task CargarEntregables()
+    {
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiEntregables");
+            var respuesta = await cliente.GetFromJsonAsync<RespuestaApi<List<EntregableModel>>>(urlApiEntregable);
+            listaEntregables = respuesta?.Datos ?? new List<EntregableModel>();
+        }
+        catch (Exception)
+        {
+            listaEntregables = new List<EntregableModel>();
+        }
+    }
+
+    private async Task CargarActividades()
+    {
+        try
+        {
+            cargando = true;
+            var cliente = fabricaHttp.CreateClient("ApiActividades");
+            var respuesta = await cliente.GetFromJsonAsync<RespuestaApi<List<ActividadModel>>>(urlApiActividad);
+            listaActividades = respuesta?.Datos ?? new List<ActividadModel>();
+
+            mensaje = $"Se cargaron {listaActividades.Count} Actividad(es).";
+            claseAviso = "alert alert-success";
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error al listar Actividades: {error.Message}";
+            claseAviso = "alert alert-danger";
+        }
+        finally
+        {
+            cargando = false;
+        }
+    }
+
+    private async Task GuardarSegunEstado()
+    {
+        if (existeActividad)
+            await ActualizarActividad();
+        else
+            await CrearActividad();
+    }
+
+    private async Task CrearActividad()
+    {
+        LimpiarMensajes();
+
+        if (IdEntregableSeleccionado == null)
+        {
+            mensaje = "Debe seleccionar un entregable.";
+            claseAviso = "alert alert-warning";
+            return;
+        }
+
+        var datosParaCrear = new
+        {
+            IdEntregable = new { Id = IdEntregableSeleccionado.Value }, // solo Id entregable
+            Titulo = ActividadActual.Titulo,
+            Descripcion = ActividadActual.Descripcion,
+            FechaInicio = ActividadActual.FechaInicio,
+            FechaFinPrevista = ActividadActual.FechaFinPrevista,
+            FechaModificacion = ActividadActual.FechaModificacion,
+            FechaFinalizacion = ActividadActual.FechaFinalizacion,
+            Prioridad = ActividadActual.Prioridad,
+            PorcentajeAvance = ActividadActual.PorcentajeAvance
+        };
+
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiActividades");
+            var respuesta = await cliente.PostAsJsonAsync(urlApiActividad, datosParaCrear);
+            if (respuesta.IsSuccessStatusCode)
+            {
+                mensaje = "Actividad creada correctamente.";
+                claseAviso = "alert alert-success";
+                await CargarActividades();
+                LimpiarFormulario();
+            }
+            else
+            {
+                var detalle = await respuesta.Content.ReadAsStringAsync();
+                mensaje = $"No se pudo crear la Actividad. Detalle: {detalle}";
+                claseAviso = "alert alert-danger";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al crear Actividad: {ex.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+
+    private async Task ActualizarActividad()
+    {
+        LimpiarMensajes();
+
+        if (ActividadActual.Id <= 0)
+        {
+            mensaje = "Debe indicar el Id para actualizar.";
+            claseAviso = "alert alert-warning";
+            return;
+        }
+
+        if (IdEntregableSeleccionado == null)
+        {
+            mensaje = "Debe seleccionar un entregable.";
+            claseAviso = "alert alert-warning";
+            return;
+        }
+
+        var datosParaActualizar = new
+        {
+            IdEntregable = new { Id = IdEntregableSeleccionado.Value },
+            Titulo = ActividadActual.Titulo,
+            Descripcion = ActividadActual.Descripcion,
+            FechaInicio = ActividadActual.FechaInicio,
+            FechaFinPrevista = ActividadActual.FechaFinPrevista,
+            FechaModificacion = ActividadActual.FechaModificacion,
+            FechaFinalizacion = ActividadActual.FechaFinalizacion,
+            Prioridad = ActividadActual.Prioridad,
+            PorcentajeAvance = ActividadActual.PorcentajeAvance
+        };
+
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiActividades");
+            var ruta = $"{urlApiActividad}/id/{ActividadActual.Id}";
+            var respuesta = await cliente.PutAsJsonAsync(ruta, datosParaActualizar);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                mensaje = "Actividad actualizada correctamente.";
+                claseAviso = "alert alert-success";
+                await CargarActividades();
+                existeActividad = true;
+                textoBotonGuardar = "Actualizar";
+            }
+            else
+            {
+                var detalle = await respuesta.Content.ReadAsStringAsync();
+                mensaje = $"No se pudo actualizar la Actividad. Detalle: {detalle}";
+                claseAviso = "alert alert-danger";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al actualizar Actividad: {ex.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+
+    private async Task EliminarActividad()
+    {
+        LimpiarMensajes();
+
+        if (ActividadActual.Id <= 0)
+        {
+            mensaje = "Debe indicar el Id para eliminar.";
+            claseAviso = "alert alert-warning";
+            return;
+        }
+
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiActividades");
+            var ruta = $"{urlApiActividad}/id/{ActividadActual.Id}";
+            var respuesta = await cliente.DeleteAsync(ruta);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                mensaje = "Actividad eliminada correctamente.";
+                claseAviso = "alert alert-success";
+                await CargarActividades();
+                LimpiarFormulario();
+            }
+            else
+            {
+                var detalle = await respuesta.Content.ReadAsStringAsync();
+                mensaje = $"No se pudo eliminar la Actividad. Detalle: {detalle}";
+                claseAviso = "alert alert-danger";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al eliminar Actividad: {ex.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+
+    private async Task BuscarPorId()
+    {
+        LimpiarMensajes();
+
+        if (ActividadActual.Id <= 0)
+        {
+            mensaje = "Debe indicar un Id válido para buscar.";
+            claseAviso = "alert alert-warning";
+            return;
+        }
+
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiActividades");
+            var ruta = $"{urlApiActividad}/id/{ActividadActual.Id}";
+            var respuesta = await cliente.GetFromJsonAsync<RespuestaApi<List<ActividadModel>>>(ruta);
+            var encontrado = respuesta?.Datos?.FirstOrDefault();
+
+            if (encontrado != null)
+            {
+                ActividadActual = encontrado;
+                IdEntregableSeleccionado = encontrado.IdEntregable?.Id;
+                existeActividad = true;
+                textoBotonGuardar = "Actualizar";
+                mensaje = "Actividad cargada en el formulario.";
+                claseAviso = "alert alert-success";
+            }
+            else
+            {
+                existeActividad = false;
+                textoBotonGuardar = "Crear";
+                mensaje = "Actividad no encontrada.";
+                claseAviso = "alert alert-warning";
+            }
+        }
+        catch (Exception ex)
+        {
+            existeActividad = false;
+            textoBotonGuardar = "Crear";
+            mensaje = $"Error al buscar Actividad: {ex.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+
+    private void CargarEnFormulario(ActividadModel a)
+    {
+        ActividadActual = a;
+        IdEntregableSeleccionado = a.IdEntregable?.Id;
+        existeActividad = true;
+        textoBotonGuardar = "Actualizar";
+        mensaje = "Actividad seleccionada desde el listado.";
+        claseAviso = "alert alert-info";
+    }
+
+    private void LimpiarMensajes()
+    {
+        mensaje = "";
+        claseAviso = "alert alert-info";
+    }
+
+    private void LimpiarFormulario()
+    {
+        ActividadActual = new ActividadModel();
+        IdEntregableSeleccionado = null;
+        existeActividad = false;
+        textoBotonGuardar = "Crear";
+        LimpiarMensajes();
+    }
+
+    private async Task ProbarConexion()
+    {
+        LimpiarMensajes();
+
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiActividades");
+            var respuesta = await cliente.GetAsync(urlApiActividad);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                mensaje = "Conexión con la API verificada.";
+                claseAviso = "alert alert-success";
+            }
+            else
+            {
+                mensaje = $"La API respondió con estado {(int)respuesta.StatusCode}.";
+                claseAviso = "alert alert-warning";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error de conexión a la API: {error.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+}
