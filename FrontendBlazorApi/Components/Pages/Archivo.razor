@@ -1,0 +1,459 @@
+@page "/archivos"
+
+@using System.Net.Http.Json
+@using FrontendBlazorApi.Models
+@using ArchivoModel = FrontendBlazorApi.Models.Archivo // Alias para claridad
+@inject IHttpClientFactory fabricaHttp
+@rendermode InteractiveServer
+
+<PageTitle>Archivos</PageTitle>
+
+<h3>Gestión de Archivos</h3>
+
+@* ------------- BARRA DE ACCIONES GENERALES ------------- *@
+<div class="mb-3 d-flex gap-2">
+    <button type="button" class="btn btn-outline-secondary" @onclick="ProbarConexion">Probar conexión</button>
+    <button type="button" class="btn btn-outline-primary" @onclick="CargarArchivos">Mostrar todos</button>
+    <button type="button" class="btn btn-outline-dark" @onclick="LimpiarFormulario">Limpiar</button>
+</div>
+
+@* ------------- MENSAJES DE ESTADO ------------- *@
+@if (!string.IsNullOrWhiteSpace(mensaje))
+{
+    <div class="@claseAviso" role="alert">@mensaje</div>
+}
+
+@* ------------- FORMULARIO CRUD ------------- *@
+<h4>Formulario de Archivo</h4>
+
+<EditForm Model="archivoActual" OnValidSubmit="GuardarSegunEstado" FormName="ArchivoForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="row g-3">
+        <div class="col-md-2">
+            <label class="form-label">Id</label>
+            <InputNumber class="form-control" @bind-Value="archivoActual.Id" />
+        </div>
+        
+        @* **MODIFICACIÓN:** Nuevo campo para UsuarioId (Clave Foránea) *@
+        <div class="col-md-2">
+            <label class="form-label">Usuario Id (FK)</label>
+            <InputNumber class="form-control" @bind-Value="archivoActual.UsuarioId" />
+        </div>
+
+        @* **MODIFICACIÓN:** Nuevo campo para Nombre *@
+        <div class="col-md-4">
+            <label class="form-label">Nombre</label>
+            <InputText class="form-control" @bind-Value="archivoActual.Nombre" />
+        </div>
+
+        @* **MODIFICACIÓN:** Campo para Ruta *@
+        <div class="col-md-4">
+            <label class="form-label">Ruta</label>
+            <InputText class="form-control" @bind-Value="archivoActual.Ruta" />
+        </div>
+
+        @* **MODIFICACIÓN:** Campo para Fecha (usando InputDate) *@
+        <div class="col-md-4">
+            <label class="form-label">Fecha (DateTime)</label>
+            @* DateOnly en Blazor se enlaza con InputDate a través de DateTime? *@
+            <InputDate class="form-control" @bind-Value="archivoActual.Fecha" />
+        </div>
+
+    </div>
+
+    <div class="mt-3 d-flex flex-wrap gap-2">
+        <button type="submit" class="btn btn-primary">@textoBotonGuardar</button>
+        <button type="button" class="btn btn-secondary" @onclick="BuscarPorId">Buscar</button>
+        <button type="button" class="btn btn-warning" @onclick="ActualizarArchivo" disabled="@(!existeArchivo)">Actualizar</button>
+        <button type="button" class="btn btn-danger" @onclick="EliminarArchivo" disabled="@(!existeArchivo)">Eliminar</button>
+    </div>
+</EditForm>
+
+<hr />
+
+@* ------------- LISTADO (READ/LIST) ------------- *@
+@if (cargando)
+{
+    <p><em>Cargando archivos...</em></p>
+}
+else if (listaArchivos.Count == 0)
+{
+    <p>No hay archivos disponibles.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Usuario Id</th>
+                <th>Nombre</th>
+                <th>Ruta</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in listaArchivos)
+            {
+                <tr>
+                    <td>@a.Id</td>
+                    <td>@a.UsuarioId</td>
+                    <td>@a.Nombre</td>
+                    <td>@a.Ruta</td>
+                    <td>@a.Fecha.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                @onclick="@(() => CargarEnFormulario(a))">
+                            Cargar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    // =============================================================================
+    // VARIABLES DE ESTADO DEL COMPONENTE
+    // =============================================================================
+    // MODIFICACIÓN: Cambiar List<UsuarioModel> a List<ArchivoModel>
+    private List<ArchivoModel> listaArchivos = new(); 
+
+    // MODIFICACIÓN: Cambiar UsuarioModel a ArchivoModel
+    [SupplyParameterFromForm]
+    private ArchivoModel archivoActual { get; set; } = new(); 
+
+    // MODIFICACIÓN: Cambiar a existeArchivo y textoBotonGuardar
+    private bool existeArchivo = false;
+    private string textoBotonGuardar = "Crear";
+    private string mensaje = "";
+    private string claseAviso = "alert alert-info";
+    private bool cargando = false;
+
+    // MODIFICACIÓN: Nueva ruta base para Archivos
+    private const string urlBaseApi = "api/archivo"; 
+
+
+
+    // =============================================================================
+    // CICLO DE VIDA
+    // =============================================================================
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarArchivos();
+    }
+
+    // =============================================================================
+    // CRUDL
+    // =============================================================================
+    // MODIFICACIÓN: Cambiar CargarUsuarios a CargarArchivos
+    private async Task CargarArchivos()
+    {
+        try
+        {
+            cargando = true;
+
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+
+            // 🚨 CAMBIO CLAVE: Usar GetAsync para obtener la respuesta completa 🚨
+
+            var httpResponse = await cliente.GetAsync(urlBaseApi);
+
+            if (httpResponse.IsSuccessStatusCode)
+        {
+            // 🚨 MODIFICACIÓN CLAVE AQUÍ: Verificar la longitud del contenido 🚨
+            if (httpResponse.Content.Headers.ContentLength > 0)
+            {
+                // La respuesta fue 200 OK Y tiene contenido. Ahora leemos el JSON.
+                 var respuesta = await httpResponse.Content.ReadFromJsonAsync<RespuestaApi<List<ArchivoModel>>>();
+                listaArchivos = respuesta?.Datos ?? new List<ArchivoModel>();
+                 mensaje = $"Se cargaron {listaArchivos.Count} archivo(s).";
+            }
+            else
+            {
+                // 200 OK, pero no hay JSON. Asumimos una lista vacía.
+                listaArchivos = new List<ArchivoModel>();
+                mensaje = "La API respondió OK, pero sin contenido (se asumió lista vacía).";
+            }
+
+             claseAviso = "alert alert-success";
+            }
+        }
+        catch (Exception error)
+        {
+            // Esto captura fallos de red o errores de serialización no relacionados con el estado HTTP
+
+            mensaje = $"Error al listar archivos: {error.Message}. Verifique la conexión con la API.";
+
+            claseAviso = "alert alert-danger";
+        }
+        finally
+        {
+            cargando = false;
+        }
+    }
+
+    private async Task BuscarPorId()
+    {
+        LimpiarMensajes();
+
+        if (archivoActual.Id <= 0) // MODIFICACIÓN: Referencia a archivoActual.Id
+        {
+            mensaje = "Debe indicar un Id válido para buscar.";
+            claseAviso = "alert alert-warning";
+            return;
+        }
+
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+            var ruta = $"{urlBaseApi}/id/{archivoActual.Id}"; // MODIFICACIÓN: Ruta con archivoActual.Id
+            RespuestaApi<List<ArchivoModel>>? respuesta = await cliente.GetFromJsonAsync<RespuestaApi<List<ArchivoModel>>>(ruta);
+            var encontrado = respuesta?.Datos?.FirstOrDefault();
+
+            if (encontrado is not null)
+            {
+                // MODIFICACIÓN: Asignar propiedades de Archivo
+                archivoActual = new ArchivoModel
+                {
+                    Id = encontrado.Id,
+                    UsuarioId = encontrado.UsuarioId,
+                    Nombre = encontrado.Nombre,
+                    Ruta = encontrado.Ruta,
+                    Fecha = encontrado.Fecha
+                };
+                existeArchivo = true;
+                textoBotonGuardar = "Actualizar";
+                mensaje = "Archivo cargado en el formulario.";
+                claseAviso = "alert alert-success";
+            }
+            else
+            {
+                existeArchivo = false;
+                textoBotonGuardar = "Crear";
+                mensaje = "Archivo no encontrado.";
+                claseAviso = "alert alert-warning";
+            }
+        }
+        catch (Exception error)
+        {
+            existeArchivo = false;
+            textoBotonGuardar = "Crear";
+            mensaje = $"Error al buscar archivo: {error.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+
+    private async Task GuardarSegunEstado()
+    {
+        if (existeArchivo) // MODIFICACIÓN: existeArchivo
+            await ActualizarArchivo();
+        else
+            await CrearArchivo();
+    }
+
+    // MODIFICACIÓN: Cambiar CrearUsuario a CrearArchivo
+    private async Task CrearArchivo()
+    {
+        LimpiarMensajes();
+
+        // MODIFICACIÓN: Crear DTO con propiedades de Archivo
+        var datosParaCrear = new
+        {
+            IdUsuario = archivoActual.UsuarioId,
+            Nombre = archivoActual.Nombre,
+            Ruta = archivoActual.Ruta,
+            Fecha = archivoActual.Fecha
+        };
+
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+            var respuesta = await cliente.PostAsJsonAsync(urlBaseApi, datosParaCrear);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                mensaje = "Archivo creado correctamente.";
+                claseAviso = "alert alert-success";
+
+                await CargarArchivos(); // MODIFICACIÓN: CargarArchivos
+
+                archivoActual = new ArchivoModel(); // MODIFICACIÓN: ArchivoModel
+                existeArchivo = false;
+                textoBotonGuardar = "Crear";
+            }
+            else
+            {
+                var detalle = await respuesta.Content.ReadAsStringAsync();
+                mensaje = $"No se pudo crear el archivo. Detalle: {detalle}";
+                claseAviso = "alert alert-danger";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error al crear archivo: {error.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+
+    // MODIFICACIÓN: Cambiar ActualizarUsuario a ActualizarArchivo
+    private async Task ActualizarArchivo()
+    {
+        LimpiarMensajes();
+
+        if (archivoActual.Id <= 0) // MODIFICACIÓN: archivoActual.Id
+        {
+            mensaje = "Debe indicar el Id para actualizar.";
+            claseAviso = "alert alert-warning";
+            return;
+        }
+
+        // 1. Se crea objeto DTO con propiedades de Archivo
+        var datosParaActualizar = new
+        {
+            IdUsuario = archivoActual.UsuarioId,
+            Nombre = archivoActual.Nombre,
+            Ruta = archivoActual.Ruta,
+            Fecha = archivoActual.Fecha
+        };
+
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+            var ruta = $"{urlBaseApi}/id/{archivoActual.Id}"; // MODIFICACIÓN: Ruta con archivoActual.Id
+
+            // 2. ENVIAMOS EL OBJETO DTO (SIN EL ID)
+            var respuesta = await cliente.PutAsJsonAsync(ruta, datosParaActualizar);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                mensaje = "Archivo actualizado correctamente.";
+                claseAviso = "alert alert-success";
+
+                await CargarArchivos(); // MODIFICACIÓN: CargarArchivos
+
+                existeArchivo = true;
+                textoBotonGuardar = "Actualizar";
+            }
+            else
+            {
+                var detalle = await respuesta.Content.ReadAsStringAsync();
+                mensaje = $"No se pudo actualizar el archivo. Detalle: {detalle}";
+                claseAviso = "alert alert-danger";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error al actualizar archivo: {error.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+
+    // MODIFICACIÓN: Cambiar EliminarUsuario a EliminarArchivo
+    private async Task EliminarArchivo()
+    {
+        LimpiarMensajes();
+
+        if (archivoActual.Id <= 0) // MODIFICACIÓN: archivoActual.Id
+        {
+            mensaje = "Debe indicar el Id para eliminar.";
+            claseAviso = "alert alert-warning";
+            return;
+        }
+
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+            var ruta = $"{urlBaseApi}/id/{archivoActual.Id}"; // MODIFICACIÓN: Ruta con archivoActual.Id
+            var respuesta = await cliente.DeleteAsync(ruta);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                mensaje = "Archivo eliminado correctamente.";
+                claseAviso = "alert alert-success";
+
+                await CargarArchivos(); // MODIFICACIÓN: CargarArchivos
+
+                LimpiarFormulario();
+            }
+            else
+            {
+                var detalle = await respuesta.Content.ReadAsStringAsync();
+                mensaje = $"No se pudo eliminar el archivo. Detalle: {detalle}";
+                claseAviso = "alert alert-danger";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error al eliminar archivo: {error.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+
+    // =============================================================================
+    // AUXILIARES
+    // =============================================================================
+    private async Task ProbarConexion()
+    {
+        // Se mantiene igual, solo cambia el mensaje
+        LimpiarMensajes();
+
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+            var respuesta = await cliente.GetAsync(urlBaseApi);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                mensaje = "Conexión con la API de Archivos verificada.";
+                claseAviso = "alert alert-success";
+            }
+            else
+            {
+                mensaje = $"La API respondió con estado {(int)respuesta.StatusCode}.";
+                claseAviso = "alert alert-warning";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error de conexión a la API: {error.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+
+    // MODIFICACIÓN: CargarEnFormulario para Archivo
+    private void CargarEnFormulario(ArchivoModel a)
+    {
+        archivoActual = new ArchivoModel()
+        {
+            Id = a.Id,
+            UsuarioId = a.UsuarioId,
+            Ruta = a.Ruta,
+            Nombre = a.Nombre,
+            Fecha = a.Fecha
+        };
+
+        existeArchivo = true;
+        textoBotonGuardar = "Actualizar";
+        mensaje = "Archivo seleccionado desde el listado.";
+        claseAviso = "alert alert-info";
+    }
+
+    private void LimpiarMensajes()
+    {
+        mensaje = "";
+        claseAviso = "alert alert-info";
+    }
+
+    private void LimpiarFormulario()
+    {
+        archivoActual = new ArchivoModel();
+        existeArchivo = false;
+        textoBotonGuardar = "Crear";
+        LimpiarMensajes();
+    }
+}

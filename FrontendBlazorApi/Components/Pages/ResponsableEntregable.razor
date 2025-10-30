@@ -1,0 +1,320 @@
+@page "/responsableentregables"
+
+@using System.Net.Http.Json
+@using FrontendBlazorApi.Models
+@using ResponsableEntregableModel = FrontendBlazorApi.Models.ResponsableEntregable // Alias
+@inject IHttpClientFactory fabricaHttp
+@rendermode InteractiveServer
+
+<PageTitle>Responsables Entregables (Relaciones)</PageTitle>
+
+<h3>Gestión de Relaciones Responsable-Entregable</h3>
+<h4>(Tabla de Unión)</h4>
+
+@* ------------- BARRA DE ACCIONES GENERALES ------------- *@
+<div class="mb-3 d-flex gap-2">
+    <button type="button" class="btn btn-outline-primary" @onclick="CargarRelaciones">Mostrar todos</button>
+    <button type="button" class="btn btn-outline-dark" @onclick="LimpiarFormulario">Limpiar</button>
+</div>
+
+@* ------------- MENSAJES DE ESTADO ------------- *@
+@if (!string.IsNullOrWhiteSpace(mensaje))
+{
+    <div class="@claseAviso" role="alert">@mensaje</div>
+}
+
+@* ------------- FORMULARIO CREAR/ELIMINAR RELACIÓN ------------- *@
+<h4>Crear Nueva Relación</h4>
+<EditForm Model="relacionActual" OnValidSubmit="CrearRelacion" FormName="ResponsableEntregableForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="row g-3 align-items-end">
+        
+        @* CAMPO 1: ResponsableId (Parte de la Clave Compuesta) *@
+        <div class="col-md-3">
+            <label class="form-label">Responsable ID</label>
+            <InputNumber class="form-control" @bind-Value="relacionActual.ResponsableId" />
+        </div>
+
+        @* CAMPO 2: EntregableId (Parte de la Clave Compuesta) *@
+        <div class="col-md-3">
+            <label class="form-label">Entregable ID</label>
+            <InputNumber class="form-control" @bind-Value="relacionActual.EntregableId" />
+        </div>
+        
+        @* CAMPO 3: FechaAsociacion *@
+        <div class="col-md-3">
+            <label class="form-label">Fecha Asociación</label>
+            @* Usamos InputDate y DateTime? para binding, aunque el modelo usa DateTime *@
+            <InputDate class="form-control" @bind-Value="relacionActual.FechaAsociacion" />
+        </div>
+        
+        @* Botones de Acción *@
+        <div class="col-md-3 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Crear Relación</button>
+            @* Para eliminar, se usan los IDs cargados en el formulario *@
+            <button type="button" class="btn btn-danger" @onclick="EliminarRelacion">Eliminar</button>
+        </div>
+    </div>
+</EditForm>
+
+<hr />
+
+@* ------------- LISTADO (READ) ------------- *@
+@if (cargando)
+{
+    <p><em>Cargando relaciones...</em></p>
+}
+else if (listaRelaciones.Count == 0)
+{
+    <p>No hay relaciones Responsable-Entregable disponibles.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Responsable Id (PK)</th>
+                <th>Entregable Id (PK)</th>
+                <th>Fecha Asociación</th> @* NUEVA COLUMNA *@
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in listaRelaciones)
+            {
+                <tr>
+                    <td>@r.ResponsableId</td>
+                    <td>@r.EntregableId</td>
+                    <td>@r.FechaAsociacion.ToShortDateString()</td> @* MOSTRAR FECHA *@
+                    <td>
+                        @* Eliminar directamente desde la fila (reutilizando la lógica de Eliminación) *@
+                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                @onclick="@(() => EliminarRelacionDirecto(r.ResponsableId, r.EntregableId))">
+                            Eliminar
+                        </button>
+                        @* Cargar IDs en formulario para modificación/eliminación manual *@
+                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                @onclick="@(() => CargarEnFormulario(r))">
+                            Cargar IDs
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    // =============================================================================
+    // VARIABLES DE ESTADO DEL COMPONENTE (Adaptadas a ResponsableEntregable)
+    // =============================================================================
+    private List<ResponsableEntregableModel> listaRelaciones = new(); // CAMBIO: ResponsableEntregableModel
+
+    [SupplyParameterFromForm]
+    private ResponsableEntregableModel relacionActual { get; set; } = new(); // CAMBIO: ResponsableEntregableModel
+
+    private string mensaje = "";
+    private string claseAviso = "alert alert-info";
+    private bool cargando = false;
+
+    // RUTA BASE: Asumimos 'api/Responsable_Entregable' o similar a tu convención anterior.
+    private const string urlBaseApi = "api/Responsable_Entregable"; 
+
+
+    // =============================================================================
+    // CICLO DE VIDA
+    // =============================================================================
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarRelaciones();
+    }
+
+    // =============================================================================
+    // CRUDL: LECTURA (Read)
+    // =============================================================================
+    private async Task CargarRelaciones()
+    {
+        try
+        {
+            cargando = true;
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios"); 
+            var httpResponse = await cliente.GetAsync(urlBaseApi); 
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                if (httpResponse.Content.Headers.ContentLength > 0)
+                {
+                    // CAMBIO: ResponsableEntregableModel
+                    var respuesta = await httpResponse.Content.ReadFromJsonAsync<RespuestaApi<List<ResponsableEntregableModel>>>();
+                    listaRelaciones = respuesta?.Datos ?? new List<ResponsableEntregableModel>();
+                    mensaje = $"Se cargaron {listaRelaciones.Count} relaciones.";
+                }
+                else
+                {
+                    listaRelaciones = new List<ResponsableEntregableModel>();
+                    mensaje = "La API respondió OK, pero sin contenido (lista vacía).";
+                }
+                claseAviso = "alert alert-success";
+            }
+            else
+            {
+                var detalle = await httpResponse.Content.ReadAsStringAsync();
+                mensaje = $"Error de la API ({(int)httpResponse.StatusCode}): No se pudo cargar. Detalle: {detalle.Substring(0, Math.Min(detalle.Length, 100))}...";
+                claseAviso = "alert alert-warning";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error al listar relaciones: {error.Message}. Verifique la conexión con la API.";
+            claseAviso = "alert alert-danger";
+        }
+        finally
+        {
+            cargando = false;
+        }
+    }
+
+    // =============================================================================
+    // CRUDL: CREACIÓN (Create)
+    // =============================================================================
+    private async Task CrearRelacion()
+    {
+        LimpiarMensajes();
+
+        if (relacionActual.ResponsableId <= 0 || relacionActual.EntregableId <= 0) // CAMBIO: ResponsableId
+        {
+            mensaje = "Debe proporcionar IDs válidos para Responsable y Entregable.";
+            claseAviso = "alert alert-warning";
+            return;
+        }
+
+        // DTO con las claves (ajustadas por JsonPropertyName) y la FechaAsociacion
+        var datosParaCrear = new
+        {
+            IdResponsable = relacionActual.ResponsableId, // Nombre de la columna SQL/JSON esperado
+            IdEntregable = relacionActual.EntregableId,   // Nombre de la columna SQL/JSON esperado
+            FechaAsociacion = relacionActual.FechaAsociacion // Dato adicional
+        };
+
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+            var respuesta = await cliente.PostAsJsonAsync(urlBaseApi, datosParaCrear);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                mensaje = "Relación creada correctamente.";
+                claseAviso = "alert alert-success";
+                await CargarRelaciones();
+                LimpiarFormulario();
+            }
+            else
+            {
+                var detalle = await respuesta.Content.ReadAsStringAsync();
+                mensaje = $"No se pudo crear la relación. Detalle: {detalle}";
+                claseAviso = "alert alert-danger";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error al crear relación: {error.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+    
+    // =============================================================================
+    // CRUDL: ELIMINACIÓN (Delete)
+    // Usamos la estrategia de POST al ConsultasController para evitar el error de clave compuesta.
+    // =============================================================================
+    
+    // Método auxiliar para eliminar desde el listado
+    private async Task EliminarRelacionDirecto(int responsableId, int entregableId)
+    {
+        // Cargamos los IDs en el modelo actual solo para fines de eliminación
+        relacionActual.ResponsableId = responsableId;
+        relacionActual.EntregableId = entregableId;
+        await EliminarRelacion();
+    }
+
+    private async Task EliminarRelacion()
+    {
+        LimpiarMensajes();
+
+        if (relacionActual.ResponsableId <= 0 || relacionActual.EntregableId <= 0) // CAMBIO: ResponsableId
+        {
+            mensaje = "Debe indicar los IDs de Responsable y Entregable para eliminar.";
+            claseAviso = "alert alert-warning";
+            return;
+        }
+
+        try
+        {
+            // Nota: Se asume que el nombre de la tabla SQL es 'Responsable_Entregable'
+            string consultaSql = "DELETE FROM Responsable_Entregable WHERE IdResponsable = @p1 AND IdEntregable = @p2";
+
+            var cuerpoSolicitud = new
+            {
+                consulta = consultaSql,
+                parametros = new Dictionary<string, object>
+                {
+                    { "@p1", relacionActual.ResponsableId }, // CAMBIO: ResponsableId
+                    { "@p2", relacionActual.EntregableId }
+                }
+            };
+
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+            var rutaConsulta = "api/consultas/ejecutarconsultaparametrizada";
+            var respuesta = await cliente.PostAsJsonAsync(rutaConsulta, cuerpoSolicitud);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                mensaje = $"Relación eliminada correctamente.";
+                claseAviso = "alert alert-success";
+                await CargarRelaciones();
+                LimpiarFormulario();
+            }
+            else
+            {
+                var detalle = await respuesta.Content.ReadAsStringAsync();
+                mensaje = $"No se pudo eliminar la relación. Detalle: {detalle}";
+                claseAviso = "alert alert-danger";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error al eliminar relación: {error.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+    
+    // =============================================================================
+    // AUXILIARES
+    // =============================================================================
+
+    // CAMBIO: ResponsableEntregableModel, ResponsableId
+    private void CargarEnFormulario(ResponsableEntregableModel r)
+    {
+        relacionActual = new ResponsableEntregableModel()
+        {
+            ResponsableId = r.ResponsableId,
+            EntregableId = r.EntregableId,
+            FechaAsociacion = r.FechaAsociacion
+        };
+        mensaje = "IDs y Fecha cargados en el formulario.";
+        claseAviso = "alert alert-info";
+    }
+
+    private void LimpiarMensajes()
+    {
+        mensaje = "";
+        claseAviso = "alert alert-info";
+    }
+
+    private void LimpiarFormulario()
+    {
+        relacionActual = new ResponsableEntregableModel();
+        LimpiarMensajes();
+    }
+}

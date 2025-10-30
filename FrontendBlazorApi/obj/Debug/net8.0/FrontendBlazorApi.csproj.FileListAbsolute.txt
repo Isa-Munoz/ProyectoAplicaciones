@@ -125,3 +125,36 @@ C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proye
 C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\staticwebassets.pack.json
 C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.genruntimeconfig.cache
 C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\ref\FrontendBlazorApi.dll
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\bin\Debug\net8.0\appsettings.Development.json
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\bin\Debug\net8.0\appsettings.json
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\bin\Debug\net8.0\FrontendBlazorApi.staticwebassets.runtime.json
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\bin\Debug\net8.0\FrontendBlazorApi.staticwebassets.endpoints.json
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\bin\Debug\net8.0\FrontendBlazorApi.exe
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\bin\Debug\net8.0\FrontendBlazorApi.deps.json
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\bin\Debug\net8.0\FrontendBlazorApi.runtimeconfig.json
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\bin\Debug\net8.0\FrontendBlazorApi.dll
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\bin\Debug\net8.0\FrontendBlazorApi.pdb
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.GeneratedMSBuildEditorConfig.editorconfig
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.AssemblyInfoInputs.cache
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.AssemblyInfo.cs
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.csproj.CoreCompileInputs.cache
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.MvcApplicationPartsAssemblyInfo.cache
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.sourcelink.json
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\scopedcss\Components\Layout\MainLayout.razor.rz.scp.css
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\scopedcss\Components\Layout\NavMenu.razor.rz.scp.css
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\scopedcss\bundle\FrontendBlazorApi.styles.css
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\scopedcss\projectbundle\FrontendBlazorApi.bundle.scp.css
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\staticwebassets.build.json
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\staticwebassets.development.json
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\staticwebassets\msbuild.FrontendBlazorApi.Microsoft.AspNetCore.StaticWebAssets.props
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\staticwebassets\msbuild.FrontendBlazorApi.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\staticwebassets\msbuild.build.FrontendBlazorApi.props
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.FrontendBlazorApi.props
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.FrontendBlazorApi.props
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\staticwebassets.pack.json
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.dll
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\refint\FrontendBlazorApi.dll
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.pdb
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.genruntimeconfig.cache
+E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\ref\FrontendBlazorApi.dll

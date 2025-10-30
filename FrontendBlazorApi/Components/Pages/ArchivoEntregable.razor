@@ -1,0 +1,305 @@
+@page "/archivoentregables"
+
+@using System.Net.Http.Json
+@using FrontendBlazorApi.Models
+@using ArchivoEntregableModel = FrontendBlazorApi.Models.ArchivoEntregable
+@inject IHttpClientFactory fabricaHttp
+@rendermode InteractiveServer
+
+<PageTitle>Archivos Entregables (Relaciones)</PageTitle>
+
+<h3>Gestión de Relaciones Archivo-Entregable</h3>
+<h4>(Tabla de Unión)</h4>
+
+@* ------------- BARRA DE ACCIONES GENERALES ------------- *@
+<div class="mb-3 d-flex gap-2">
+    <button type="button" class="btn btn-outline-primary" @onclick="CargarRelaciones">Mostrar todos</button>
+    <button type="button" class="btn btn-outline-dark" @onclick="LimpiarFormulario">Limpiar</button>
+</div>
+
+@* ------------- MENSAJES DE ESTADO ------------- *@
+@if (!string.IsNullOrWhiteSpace(mensaje))
+{
+    <div class="@claseAviso" role="alert">@mensaje</div>
+}
+
+@* ------------- FORMULARIO CREAR/ELIMINAR RELACIÓN ------------- *@
+<h4>Crear Nueva Relación</h4>
+@* La actualización no es común en tablas de unión *@
+
+<EditForm Model="relacionActual" OnValidSubmit="CrearRelacion" FormName="ArchivoEntregableForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="row g-3">
+        @* CAMPO 1: ArchivoId (Parte de la Clave Compuesta) *@
+        <div class="col-md-3">
+            <label class="form-label">Archivo ID</label>
+            <InputNumber class="form-control" @bind-Value="relacionActual.ArchivoId" />
+        </div>
+
+        @* CAMPO 2: EntregableId (Parte de la Clave Compuesta) *@
+        <div class="col-md-3">
+            <label class="form-label">Entregable ID</label>
+            <InputNumber class="form-control" @bind-Value="relacionActual.EntregableId" />
+        </div>
+
+        <div class="mt-3 d-flex flex-wrap gap-2">
+            <button type="submit" class="btn btn-primary">Crear Relación</button>
+        </div>
+        @* Para eliminar, cargamos los IDs y llamamos a Eliminar *@
+        <button type="button" class="btn btn-danger" @onclick="EliminarRelacion">Eliminar</button>
+    </div>
+</EditForm>
+
+<hr />
+
+@* ------------- LISTADO (READ) ------------- *@
+@if (cargando)
+{
+    <p><em>Cargando relaciones...</em></p>
+}
+else if (listaRelaciones.Count == 0)
+{
+    <p>No hay relaciones Archivo-Entregable disponibles.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Archivo Id (PK)</th>
+                <th>Entregable Id (PK)</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in listaRelaciones)
+            {
+                <tr>
+                    <td>@r.ArchivoId</td>
+                    <td>@r.EntregableId</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                @onclick="@(() => EliminarRelacionDirecto(r.ArchivoId, r.EntregableId))">
+                            Eliminar
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                @onclick="@(() => CargarEnFormulario(r))">
+                            Cargar IDs
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    // =============================================================================
+    // VARIABLES DE ESTADO DEL COMPONENTE
+    // =============================================================================
+    private List<ArchivoEntregableModel> listaRelaciones = new();
+
+    // Renombrado de archivoActual a relacionActual
+    [SupplyParameterFromForm]
+    private ArchivoEntregableModel relacionActual { get; set; } = new();
+
+    // Se eliminó 'existeArchivo/Usuario' porque es una tabla de unión simple
+    private string mensaje = "";
+    private string claseAviso = "alert alert-info";
+    private bool cargando = false;
+
+    // Nueva ruta base
+    private const string urlBaseApi = "api/Archivo_Entregable";
+
+
+    // =============================================================================
+    // CICLO DE VIDA
+    // =============================================================================
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarRelaciones();
+    }
+
+    // =============================================================================
+    // CRUDL
+    // =============================================================================
+    private async Task CargarRelaciones()
+    {
+        try
+        {
+            cargando = true;
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios"); 
+            var httpResponse = await cliente.GetAsync(urlBaseApi); 
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                // Manejo de cuerpo de respuesta vacío (como se corrigió antes)
+                if (httpResponse.Content.Headers.ContentLength > 0)
+                {
+                    var respuesta = await httpResponse.Content.ReadFromJsonAsync<RespuestaApi<List<ArchivoEntregableModel>>>();
+                    listaRelaciones = respuesta?.Datos ?? new List<ArchivoEntregableModel>();
+                    mensaje = $"Se cargaron {listaRelaciones.Count} relaciones.";
+                }
+                else
+                {
+                    listaRelaciones = new List<ArchivoEntregableModel>();
+                    mensaje = "La API respondió OK, pero sin contenido (lista vacía).";
+                }
+                claseAviso = "alert alert-success";
+            }
+            else
+            {
+                 var detalle = await httpResponse.Content.ReadAsStringAsync();
+                 mensaje = $"Error de la API ({(int)httpResponse.StatusCode}): No se pudo cargar. Detalle: {detalle.Substring(0, Math.Min(detalle.Length, 100))}...";
+                 claseAviso = "alert alert-warning";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error al listar relaciones: {error.Message}. Verifique la conexión con la API.";
+            claseAviso = "alert alert-danger";
+        }
+        finally
+        {
+            cargando = false;
+        }
+    }
+
+    private async Task CrearRelacion()
+    {
+        LimpiarMensajes();
+
+        if (relacionActual.ArchivoId <= 0 || relacionActual.EntregableId <= 0)
+        {
+            mensaje = "Debe proporcionar IDs válidos para Archivo y Entregable.";
+            claseAviso = "alert alert-warning";
+            return;
+        }
+
+        // El DTO solo necesita las dos claves
+        var datosParaCrear = new
+        {
+            IdArchivo = relacionActual.ArchivoId,
+            IdEntregable = relacionActual.EntregableId
+        };
+
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+            var respuesta = await cliente.PostAsJsonAsync(urlBaseApi, datosParaCrear);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                mensaje = "Relación creada correctamente.";
+                claseAviso = "alert alert-success";
+                await CargarRelaciones();
+                LimpiarFormulario();
+            }
+            else
+            {
+                var detalle = await respuesta.Content.ReadAsStringAsync();
+                mensaje = $"No se pudo crear la relación. Detalle: {detalle}";
+                claseAviso = "alert alert-danger";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error al crear relación: {error.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+    
+    // Método auxiliar para eliminar desde el listado
+    private async Task EliminarRelacionDirecto(int archivoId, int entregableId)
+    {
+        // Cargamos los IDs en el modelo actual solo para fines de UX
+        relacionActual.ArchivoId = archivoId;
+        relacionActual.EntregableId = entregableId;
+        await EliminarRelacion();
+    }
+
+    private async Task EliminarRelacion()
+    {
+        LimpiarMensajes();
+
+        if (relacionActual.ArchivoId <= 0 || relacionActual.EntregableId <= 0)
+        {
+            mensaje = "Debe indicar los IDs de Archivo y Entregable para eliminar.";
+            claseAviso = "alert alert-warning";
+            return;
+        }
+
+        try
+        {
+            // 1. Define la consulta DELETE parametrizada
+            string consultaSql = "DELETE FROM Archivo_Entregable WHERE ArchivoId = @p1 AND EntregableId = @p2";
+
+            // 2. Crea el cuerpo de la solicitud para el ConsultasController
+            var cuerpoSolicitud = new
+            {
+                consulta = consultaSql,
+                parametros = new Dictionary<string, object>
+                {
+                    { "@p1", relacionActual.ArchivoId },
+                    { "@p2", relacionActual.EntregableId }
+                }
+            };
+
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+            
+            // 3. Llama al endpoint de consultas con POST en lugar de DELETE
+            var rutaConsulta = "api/consultas/ejecutarconsultaparametrizada";
+            var respuesta = await cliente.PostAsJsonAsync(rutaConsulta, cuerpoSolicitud);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                mensaje = $"Relación eliminada correctamente.";
+                claseAviso = "alert alert-success";
+                await CargarRelaciones();
+                LimpiarFormulario();
+            }
+            else
+            {
+                var detalle = await respuesta.Content.ReadAsStringAsync();
+                mensaje = $"No se pudo eliminar la relación. Detalle: {detalle}";
+                claseAviso = "alert alert-danger";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error al eliminar relación: {error.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+    
+    // Se eliminó BuscarPorId y ActualizarRelacion, ya que no son típicos en tablas de unión.
+
+    // =============================================================================
+    // AUXILIARES
+    // =============================================================================
+
+    private void CargarEnFormulario(ArchivoEntregableModel r)
+    {
+        relacionActual = new ArchivoEntregableModel()
+        {
+            ArchivoId = r.ArchivoId,
+            EntregableId = r.EntregableId
+        };
+        mensaje = "IDs cargados en el formulario.";
+        claseAviso = "alert alert-info";
+    }
+
+    private void LimpiarMensajes()
+    {
+        mensaje = "";
+        claseAviso = "alert alert-info";
+    }
+
+    private void LimpiarFormulario()
+    {
+        relacionActual = new ArchivoEntregableModel();
+        LimpiarMensajes();
+    }
+}

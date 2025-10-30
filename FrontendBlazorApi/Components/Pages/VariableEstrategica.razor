@@ -129,16 +129,39 @@ else
         try
         {
             cargando = true;
-            var cliente = fabricaHttp.CreateClient("ApiVariableEstrategicas");
-            var respuesta = await cliente.GetFromJsonAsync<RespuestaApi<List<VariableEstrategicaModel>>>(urlBaseApi);
-            listaVariableEstrategicas = respuesta?.Datos ?? new List<VariableEstrategicaModel>();
 
-            mensaje = $"Se cargaron {listaVariableEstrategicas.Count} tipo(s) de Responsable(s).";
-            claseAviso = "alert alert-success";
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+
+            // 🚨 CAMBIO CLAVE: Usar GetAsync para obtener la respuesta completa 🚨
+
+            var httpResponse = await cliente.GetAsync(urlBaseApi);
+
+            if (httpResponse.IsSuccessStatusCode)
+        {
+            // 🚨 MODIFICACIÓN CLAVE AQUÍ: Verificar la longitud del contenido 🚨
+            if (httpResponse.Content.Headers.ContentLength > 0)
+            {
+                // La respuesta fue 200 OK Y tiene contenido. Ahora leemos el JSON.
+                 var respuesta = await httpResponse.Content.ReadFromJsonAsync<RespuestaApi<List<VariableEstrategicaModel>>>();
+                listaVariableEstrategicas = respuesta?.Datos ?? new List<VariableEstrategicaModel>();
+                 mensaje = $"Se cargaron {listaVariableEstrategicas.Count} VariableEstrategica(s).";
+            }
+            else
+            {
+                // 200 OK, pero no hay JSON. Asumimos una lista vacía.
+                listaVariableEstrategicas = new List<VariableEstrategicaModel>();
+                mensaje = "La API respondió OK, pero sin contenido (se asumió lista vacía).";
+            }
+
+             claseAviso = "alert alert-success";
+            }
         }
         catch (Exception error)
         {
-            mensaje = $"Error al listar Variables Estrategicas: {error.Message}";
+            // Esto captura fallos de red o errores de serialización no relacionados con el estado HTTP
+
+            mensaje = $"Error al listar VariableEstrategicas: {error.Message}. Verifique la conexión con la API.";
+
             claseAviso = "alert alert-danger";
         }
         finally

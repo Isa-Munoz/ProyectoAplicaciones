@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "8kFocFbH6OTRFxNpJeHnSg31etZML5ZEg5ETMSnh1zU=",
+  "Hash": "fibtNo87m6nli9ODCl05bHnh27tI6HdHm9jzP9P3UFs=",
   "Source": "FrontendBlazorApi",
   "BasePath": "_content/FrontendBlazorApi",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "FrontendBlazorApi\\wwwroot",
       "Source": "FrontendBlazorApi",
-      "ContentRoot": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\",
+      "ContentRoot": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\",
       "BasePath": "_content/FrontendBlazorApi",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\bundle\\FrontendBlazorApi.styles.css",
+      "Identity": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\bundle\\FrontendBlazorApi.styles.css",
       "SourceId": "FrontendBlazorApi",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "ContentRoot": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
       "BasePath": "_content/FrontendBlazorApi",
       "RelativePath": "FrontendBlazorApi#[.{fingerprint}]?.styles.css",
       "AssetKind": "All",
@@ -35,13 +35,13 @@
       "Integrity": "rOkuZSwS7iwNa5yoK/cmunfF4vx2K2Zv919hdVsaC/M=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\bundle\\FrontendBlazorApi.styles.css"
+      "OriginalItemSpec": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\bundle\\FrontendBlazorApi.styles.css"
     },
     {
-      "Identity": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\FrontendBlazorApi.bundle.scp.css",
+      "Identity": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\FrontendBlazorApi.bundle.scp.css",
       "SourceId": "FrontendBlazorApi",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/FrontendBlazorApi",
       "RelativePath": "FrontendBlazorApi#[.{fingerprint}]!.bundle.scp.css",
       "AssetKind": "All",
@@ -56,13 +56,13 @@
       "Integrity": "rOkuZSwS7iwNa5yoK/cmunfF4vx2K2Zv919hdVsaC/M=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\FrontendBlazorApi.bundle.scp.css"
+      "OriginalItemSpec": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\FrontendBlazorApi.bundle.scp.css"
     },
     {
-      "Identity": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\app.css",
+      "Identity": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\app.css",
       "SourceId": "FrontendBlazorApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\",
+      "ContentRoot": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\",
       "BasePath": "_content/FrontendBlazorApi",
       "RelativePath": "app#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -80,10 +80,10 @@
       "OriginalItemSpec": "wwwroot\\app.css"
     },
     {
-      "Identity": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "Identity": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\bootstrap\\bootstrap.min.css",
       "SourceId": "FrontendBlazorApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\",
+      "ContentRoot": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\",
       "BasePath": "_content/FrontendBlazorApi",
       "RelativePath": "bootstrap/bootstrap.min#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -101,10 +101,10 @@
       "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Identity": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "Identity": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\bootstrap\\bootstrap.min.css.map",
       "SourceId": "FrontendBlazorApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\",
+      "ContentRoot": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\",
       "BasePath": "_content/FrontendBlazorApi",
       "RelativePath": "bootstrap/bootstrap.min.css#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -122,10 +122,10 @@
       "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\favicon.png",
+      "Identity": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\favicon.png",
       "SourceId": "FrontendBlazorApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\",
+      "ContentRoot": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\",
       "BasePath": "_content/FrontendBlazorApi",
       "RelativePath": "favicon#[.{fingerprint}]?.png",
       "AssetKind": "All",
@@ -146,7 +146,7 @@
   "Endpoints": [
     {
       "Route": "app.css",
-      "AssetFile": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\app.css",
+      "AssetFile": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\app.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -167,7 +167,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 03 Oct 2025 16:11:08 GMT"
+          "Value": "Tue, 28 Oct 2025 22:42:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -183,7 +183,7 @@
     },
     {
       "Route": "app.da95v2qkru.css",
-      "AssetFile": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\app.css",
+      "AssetFile": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\app.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -204,7 +204,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 03 Oct 2025 16:11:08 GMT"
+          "Value": "Tue, 28 Oct 2025 22:42:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -228,7 +228,7 @@
     },
     {
       "Route": "bootstrap/bootstrap.min.6gzpyzhau4.css",
-      "AssetFile": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "AssetFile": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\bootstrap\\bootstrap.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -249,7 +249,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 03 Oct 2025 16:11:08 GMT"
+          "Value": "Tue, 28 Oct 2025 22:42:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -273,7 +273,7 @@
     },
     {
       "Route": "bootstrap/bootstrap.min.css",
-      "AssetFile": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "AssetFile": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\bootstrap\\bootstrap.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -294,7 +294,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 03 Oct 2025 16:11:08 GMT"
+          "Value": "Tue, 28 Oct 2025 22:42:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -310,7 +310,7 @@
     },
     {
       "Route": "bootstrap/bootstrap.min.css.8inm30yfxf.map",
-      "AssetFile": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "AssetFile": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\bootstrap\\bootstrap.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -331,7 +331,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 03 Oct 2025 16:11:08 GMT"
+          "Value": "Tue, 28 Oct 2025 22:42:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -355,7 +355,7 @@
     },
     {
       "Route": "bootstrap/bootstrap.min.css.map",
-      "AssetFile": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "AssetFile": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\bootstrap\\bootstrap.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -376,7 +376,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 03 Oct 2025 16:11:08 GMT"
+          "Value": "Tue, 28 Oct 2025 22:42:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -392,7 +392,7 @@
     },
     {
       "Route": "favicon.ifv42okdf2.png",
-      "AssetFile": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\favicon.png",
+      "AssetFile": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\favicon.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -413,7 +413,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 03 Oct 2025 16:11:08 GMT"
+          "Value": "Tue, 28 Oct 2025 22:42:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -437,7 +437,7 @@
     },
     {
       "Route": "favicon.png",
-      "AssetFile": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\favicon.png",
+      "AssetFile": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\favicon.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -458,7 +458,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 03 Oct 2025 16:11:08 GMT"
+          "Value": "Tue, 28 Oct 2025 22:42:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -474,7 +474,7 @@
     },
     {
       "Route": "FrontendBlazorApi.bundle.scp.css",
-      "AssetFile": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\FrontendBlazorApi.bundle.scp.css",
+      "AssetFile": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\FrontendBlazorApi.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -495,7 +495,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 04 Oct 2025 04:00:41 GMT"
+          "Value": "Thu, 30 Oct 2025 03:56:30 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -511,7 +511,7 @@
     },
     {
       "Route": "FrontendBlazorApi.ccznj10djk.bundle.scp.css",
-      "AssetFile": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\FrontendBlazorApi.bundle.scp.css",
+      "AssetFile": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\FrontendBlazorApi.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -532,7 +532,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 04 Oct 2025 04:00:41 GMT"
+          "Value": "Thu, 30 Oct 2025 03:56:30 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -556,7 +556,7 @@
     },
     {
       "Route": "FrontendBlazorApi.ccznj10djk.styles.css",
-      "AssetFile": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\bundle\\FrontendBlazorApi.styles.css",
+      "AssetFile": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\bundle\\FrontendBlazorApi.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -577,7 +577,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 04 Oct 2025 04:00:41 GMT"
+          "Value": "Thu, 30 Oct 2025 03:56:30 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -601,7 +601,7 @@
     },
     {
       "Route": "FrontendBlazorApi.styles.css",
-      "AssetFile": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\bundle\\FrontendBlazorApi.styles.css",
+      "AssetFile": "E:\\U\\2025-2\\Aplicaciones\\Proyecto\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\bundle\\FrontendBlazorApi.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -622,7 +622,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 04 Oct 2025 04:00:41 GMT"
+          "Value": "Thu, 30 Oct 2025 03:56:30 GMT"
         },
         {
           "Name": "Cache-Control",
