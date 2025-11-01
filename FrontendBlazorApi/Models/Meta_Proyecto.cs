@@ -2,8 +2,10 @@ namespace FrontendBlazorApi.Models
 {
     public class Meta_Proyecto
     {
-        public MetaEstrategica? IdMeta { get; set; }
-        public Proyecto? IdProyecta { get; set; }
+        public int? IdMeta { get; set; }
+        public int? IdProyecta { get; set; }
         public DateTime? FechaAsociacion { get; set; }
+        public MetaEstrategica? MetaEstrategica{ get; set; }
+        public Proyecto? Proyecto { get; set; }
     }
 }

@@ -49,7 +49,7 @@
                 <option value="">-- Seleccione un Estado --</option>
                 @foreach (var estado in listaEstados)
                 {
-                    <option value="@estado.Id">@($"Presupuesto {estado.Id} ({estado.Nombre})")</option>
+                    <option value="@estado.Id">@estado.Nombre</option>
                 }
             </InputSelect>
         </div>

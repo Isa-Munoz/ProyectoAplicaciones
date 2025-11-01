@@ -2,7 +2,8 @@
 
 @using System.Net.Http.Json
 @using FrontendBlazorApi.Models
-@using ArchivoModel = FrontendBlazorApi.Models.Archivo // Alias para claridad
+@using UsuarioModel = FrontendBlazorApi.Models.Usuario
+@using ArchivoModel = FrontendBlazorApi.Models.Archivo
 @inject IHttpClientFactory fabricaHttp
 @rendermode InteractiveServer
 
@@ -37,9 +38,15 @@
         </div>
         
         @* **MODIFICACIÓN:** Nuevo campo para UsuarioId (Clave Foránea) *@
-        <div class="col-md-2">
-            <label class="form-label">Usuario Id (FK)</label>
-            <InputNumber class="form-control" @bind-Value="archivoActual.UsuarioId" />
+        <div class="col-md-4">
+            <label class="form-label">Usuario (FK)</label>
+            <InputSelect class="form-control" @bind-Value="archivoActual.UsuarioId">
+                <option value="">-- Seleccione un Usuario --</option>
+                @foreach (var usuario in listaUsuarios)
+                {
+                    <option value="@usuario.Id">@usuario.Email</option>
+                }
+            </InputSelect>
         </div>
 
         @* **MODIFICACIÓN:** Nuevo campo para Nombre *@
@@ -122,6 +129,7 @@ else
     // =============================================================================
     // MODIFICACIÓN: Cambiar List<UsuarioModel> a List<ArchivoModel>
     private List<ArchivoModel> listaArchivos = new(); 
+    private List<UsuarioModel> listaUsuarios = new(); 
 
     // MODIFICACIÓN: Cambiar UsuarioModel a ArchivoModel
     [SupplyParameterFromForm]
@@ -145,6 +153,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         await CargarArchivos();
+        await CargarUsuarios();
     }
 
     // =============================================================================
@@ -196,7 +205,16 @@ else
             cargando = false;
         }
     }
-
+    private async Task CargarUsuarios()
+    {
+        var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+        var respuestaApi = await cliente.GetFromJsonAsync<RespuestaApi<List<UsuarioModel>>>("api/usuario");
+        if (respuestaApi?.Datos != null)
+        {
+            listaUsuarios = respuestaApi.Datos;
+        }
+         else { listaUsuarios = new List<UsuarioModel>(); }
+    }
     private async Task BuscarPorId()
     {
         LimpiarMensajes();

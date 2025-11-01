@@ -158,3 +158,4 @@ C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proye
 C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.pdb
 C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.genruntimeconfig.cache
 C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\ref\FrontendBlazorApi.dll
+C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\scopedcss\Components\Pages\Home.razor.rz.scp.css

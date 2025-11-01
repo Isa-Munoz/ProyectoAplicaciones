@@ -64,10 +64,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFc3RhZG9fUHJveWVjdG8ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Home.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/MetaEstrategica.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNZXRhRXN0cmF0ZWdpY2EucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
@@ -143,3 +139,7 @@ build_metadata.AdditionalFiles.CssScope = b-ihevq7z9pr
 [C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-1wdgyf32b7
+
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-zpncgas2x3

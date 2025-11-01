@@ -1,0 +1,103 @@
+/* Home.razor.css */
+
+.home-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 3.5rem - 2rem); /* Altura completa menos top-row y padding */
+    padding: 2rem; /* Espacio alrededor del contenido */
+    /* Fondo muy sutil o degradado para el área principal de contenido */
+    background-image: linear-gradient(to bottom right, #f8f9fa, #e9ecef); /* Degradado gris muy suave */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05); /* Sombra interna sutil */
+}
+
+.main-card {
+    background-color: white; /* Tarjeta principal blanca */
+    padding: 3rem;
+    border-radius: 15px; /* Bordes más redondeados */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 5px 10px rgba(0, 0, 0, 0.1); /* Sombra Morph */
+    text-align: center;
+    max-width: 800px;
+    width: 100%;
+    transform: translateY(-20px); /* Efecto flotante sutil */
+    animation: fadeInSlideUp 0.8s ease-out forwards; /* Animación de entrada */
+}
+
+.main-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #343a40; /* Gris oscuro para el título */
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra de texto suave */
+}
+
+.app-name {
+    color: #6A5ACD; /* Color Morado Profundo para el nombre de la app */
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    color: #6c757d; /* Gris medio para el subtítulo */
+    margin-bottom: 2rem;
+    font-style: italic;
+}
+
+.welcome-message {
+    font-size: 1.1rem;
+    color: #495057; /* Texto del mensaje */
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+    text-align: left;
+    background-color: #f0f2f5; /* Fondo ligeramente diferente para el mensaje */
+    padding: 1.5rem;
+    border-radius: 10px;
+    border-left: 5px solid #B2B5E0; /* Borde azul acero claro */
+}
+
+.btn-morph-main {
+    background-color: #6A5ACD !important; /* Morado Profundo */
+    border-color: #6A5ACD !important;
+    color: white !important;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra al botón */
+    transition: all 0.3s ease;
+}
+
+.btn-morph-main:hover {
+    background-color: #5a4bbf !important; /* Un morado ligeramente más oscuro al hover */
+    border-color: #5a4bbf !important;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada al hover */
+    transform: translateY(-2px); /* Efecto de "levantar" */
+}
+
+/* Animación de entrada */
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Ajustes responsivos básicos */
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 2.5rem;
+    }
+    .subtitle {
+        font-size: 1.2rem;
+    }
+    .main-card {
+        padding: 2rem;
+    }
+    .btn-morph-main {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+    }
+}

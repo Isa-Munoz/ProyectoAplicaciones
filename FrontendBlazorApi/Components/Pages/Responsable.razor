@@ -3,6 +3,8 @@
 @using System.Net.Http.Json
 @using FrontendBlazorApi.Models
 @using ResponsableModel = FrontendBlazorApi.Models.Responsable
+@using TipoResponsableModel = FrontendBlazorApi.Models.TipoResponsable
+@using UsuarioModel = FrontendBlazorApi.Models.Usuario
 @inject IHttpClientFactory fabricaHttp
 @rendermode InteractiveServer
 
@@ -37,15 +39,27 @@
         </div>
         
         @* CAMPO AÑADIDO: TipoResponsableId *@
-        <div class="col-md-3">
-            <label class="form-label">Tipo Responsable Id (FK)</label>
-            <InputNumber class="form-control" @bind-Value="responsableActual.TipoResponsableId" />
+        <div class="col-md-4">
+            <label class="form-label">Tipo Responsable (FK)</label>
+            <InputSelect class="form-control" @bind-Value="responsableActual.TipoResponsableId">
+                <option value="">-- Seleccione un Tipo Responsable --</option>
+                @foreach (var tiporesponsable in listaTipoResponsables)
+                {
+                    <option value="@tiporesponsable.Id">@tiporesponsable.Titulo</option>
+                }
+            </InputSelect>
         </div>
         
         @* CAMPO MANTENIDO: UsuarioId (Clave Foránea) *@
-        <div class="col-md-2">
-            <label class="form-label">Usuario Id (FK)</label>
-            <InputNumber class="form-control" @bind-Value="responsableActual.UsuarioId" />
+        <div class="col-md-4">
+            <label class="form-label">Usuario (FK)</label>
+            <InputSelect class="form-control" @bind-Value="responsableActual.UsuarioId">
+                <option value="">-- Seleccione un Usuario --</option>
+                @foreach (var usuario in listaUsuarios)
+                {
+                    <option value="@usuario.Id">@usuario.Email</option>
+                }
+            </InputSelect>
         </div>
 
         @* CAMPO MANTENIDO: Nombre *@
@@ -113,7 +127,9 @@ else
     // =============================================================================
     // VARIABLES DE ESTADO DEL COMPONENTE (Adaptadas a Responsable)
     // =============================================================================
-    private List<ResponsableModel> listaResponsables = new(); 
+    private List<ResponsableModel> listaResponsables = new();
+    private List<UsuarioModel> listaUsuarios = new(); 
+    private List<TipoResponsableModel> listaTipoResponsables = new();  
 
     [SupplyParameterFromForm]
     private ResponsableModel responsableActual { get; set; } = new(); 
@@ -133,6 +149,8 @@ else
     protected override async Task OnInitializedAsync()
     {
         await CargarResponsables();
+        await CargarUsuarios();
+        await CargarTipoResponsables();
     }
 
     // =============================================================================
@@ -179,7 +197,26 @@ else
             cargando = false;
         }
     }
-
+    private async Task CargarTipoResponsables()
+    {
+        var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+        var respuestaApi = await cliente.GetFromJsonAsync<RespuestaApi<List<TipoResponsableModel>>>("api/tiporesponsable");
+        if (respuestaApi?.Datos != null)
+        {
+            listaTipoResponsables = respuestaApi.Datos;
+        }
+         else { listaTipoResponsables = new List<TipoResponsableModel>(); }
+    }
+    private async Task CargarUsuarios()
+    {
+        var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+        var respuestaApi = await cliente.GetFromJsonAsync<RespuestaApi<List<UsuarioModel>>>("api/usuario");
+        if (respuestaApi?.Datos != null)
+        {
+            listaUsuarios = respuestaApi.Datos;
+        }
+         else { listaUsuarios = new List<UsuarioModel>(); }
+    }
     private async Task BuscarPorId()
     {
         LimpiarMensajes();
