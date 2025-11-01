@@ -1,0 +1,454 @@
+@page "/distribucionpresupuestos"
+
+@using System.Net.Http.Json
+@using FrontendBlazorApi.Models
+@using DistribucionPresupuestoModel = FrontendBlazorApi.Models.DistribucionPresupuesto
+@using PresupuestoModel = FrontendBlazorApi.Models.Presupuesto
+@using ProyectoModel = FrontendBlazorApi.Models.Proyecto
+@inject IHttpClientFactory fabricaHttp
+@rendermode InteractiveServer
+
+<PageTitle>DistribucionPresupuestos</PageTitle>
+
+<h3>Gestión de DistribucionPresupuestos</h3>
+
+@* ------------- BARRA DE ACCIONES GENERALES ------------- *@
+<div class="mb-3 d-flex gap-2">
+    <button type="button" class="btn btn-outline-secondary" @onclick="ProbarConexion">Probar conexión</button>
+    <button type="button" class="btn btn-outline-primary" @onclick="CargarDistribucionPresupuestos">Mostrar todos</button>
+    <button type="button" class="btn btn-outline-dark" @onclick="LimpiarFormulario">Limpiar</button>
+</div>
+
+@* ------------- MENSAJES DE ESTADO ------------- *@
+@if (!string.IsNullOrWhiteSpace(mensaje))
+{
+    <div class="@claseAviso" role="alert">@mensaje</div>
+}
+
+@* ------------- FORMULARIO CRUD ------------- *@
+<h4>Formulario de DistribucionPresupuesto</h4>
+
+<EditForm Model="distribucionpresupuestoActual" OnValidSubmit="GuardarSegunEstado" FormName="DistribucionPresupuestoForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="row g-3">
+        <div class="col-md-2">
+            <label class="form-label">Id</label>
+            <InputNumber class="form-control" @bind-Value="distribucionpresupuestoActual.Id" />
+        </div>
+        
+        <div class="col-md-4">
+            <label class="form-label">Presupuesto (FK)</label>
+            <InputSelect class="form-control" @bind-Value="distribucionpresupuestoActual.IdPresupuestoPadre">
+                <option value="">-- Seleccione un Presupuesto --</option>
+                @foreach (var presupuesto in listaPresupuestos)
+                {
+                    <option value="@presupuesto.Id">@presupuesto.MontoSolicitado</option>
+                }
+            </InputSelect>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">Proyecto (FK)</label>
+            <InputSelect class="form-control" @bind-Value="distribucionpresupuestoActual.IdProyectoHijo">
+                <option value="">-- Seleccione un Proyecto --</option>
+                @foreach (var proyecto in listaProyectos)
+                {
+                    <option value="@proyecto.Id">@proyecto.Titulo</option>
+                }
+            </InputSelect>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">MontoAsignado </label>
+            <InputNumber class="form-control" @bind-Value="distribucionpresupuestoActual.MontoAsignado" />
+        </div>
+
+    </div>
+
+    <div class="mt-3 d-flex flex-wrap gap-2">
+        <button type="submit" class="btn btn-primary">@textoBotonGuardar</button>
+        <button type="button" class="btn btn-secondary" @onclick="BuscarPorId">Buscar</button>
+        <button type="button" class="btn btn-warning" @onclick="ActualizarDistribucionPresupuesto" disabled="@(!existeDistribucionPresupuesto)">Actualizar</button>
+        <button type="button" class="btn btn-danger" @onclick="EliminarDistribucionPresupuesto" disabled="@(!existeDistribucionPresupuesto)">Eliminar</button>
+    </div>
+</EditForm>
+
+<hr />
+
+@* ------------- LISTADO (READ/LIST) ------------- *@
+@if (cargando)
+{
+    <p><em>Cargando distribucionpresupuestos...</em></p>
+}
+else if (listaDistribucionPresupuestos.Count == 0)
+{
+    <p>No hay distribucionpresupuestos disponibles.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>IdPresupuestoPadre</th>
+                <th>IdProyectoHijo</th>
+                <th>MontoAsignado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in listaDistribucionPresupuestos)
+            {
+                <tr>
+                    <td>@a.Id</td>
+                    <td>@a.IdPresupuestoPadre</td>
+                    <td>@a.IdProyectoHijo</td>
+                    <td>@a.MontoAsignado</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                @onclick="@(() => CargarEnFormulario(a))">
+                            Cargar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    // =============================================================================
+    // VARIABLES DE ESTADO DEL COMPONENTE
+    // =============================================================================
+    private List<DistribucionPresupuestoModel> listaDistribucionPresupuestos = new(); 
+    private List<PresupuestoModel> listaPresupuestos = new();
+    private List<ProyectoModel> listaProyectos = new();
+    
+    [SupplyParameterFromForm]
+    private DistribucionPresupuestoModel distribucionpresupuestoActual { get; set; } = new(); 
+    private bool existeDistribucionPresupuesto = false;
+    private string textoBotonGuardar = "Crear";
+    private string mensaje = "";
+    private string claseAviso = "alert alert-info";
+    private bool cargando = false;
+    private const string urlBaseApi = "api/distribucionpresupuesto"; 
+
+
+
+    // =============================================================================
+    // CICLO DE VIDA
+    // =============================================================================
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarDistribucionPresupuestos();
+        await CargarPresupuestos();
+        await CargarProyectos();
+    }
+
+    // =============================================================================
+    // CRUDL
+    // =============================================================================
+
+    private async Task CargarDistribucionPresupuestos()
+    {
+        try
+        {
+            cargando = true;
+
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+
+            var httpResponse = await cliente.GetAsync(urlBaseApi);
+
+            if (httpResponse.IsSuccessStatusCode)
+        {
+            if (httpResponse.Content.Headers.ContentLength > 0)
+            {
+                 var respuesta = await httpResponse.Content.ReadFromJsonAsync<RespuestaApi<List<DistribucionPresupuestoModel>>>();
+                listaDistribucionPresupuestos = respuesta?.Datos ?? new List<DistribucionPresupuestoModel>();
+                 mensaje = $"Se cargaron {listaDistribucionPresupuestos.Count} distribucionpresupuesto(s).";
+            }
+            else
+            {
+                listaDistribucionPresupuestos = new List<DistribucionPresupuestoModel>();
+                mensaje = "La API respondió OK, pero sin contenido (se asumió lista vacía).";
+            }
+
+             claseAviso = "alert alert-success";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error al listar distribucionpresupuestos: {error.Message}. Verifique la conexión con la API.";
+
+            claseAviso = "alert alert-danger";
+        }
+        finally
+        {
+            cargando = false;
+        }
+    }
+    private async Task CargarPresupuestos()
+    {
+        var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+        var respuestaApi = await cliente.GetFromJsonAsync<RespuestaApi<List<PresupuestoModel>>>("api/presupuesto");
+    
+        if (respuestaApi?.Datos != null)
+            listaPresupuestos = respuestaApi.Datos;
+        else
+            listaPresupuestos = new List<PresupuestoModel>();
+    }
+
+    private async Task CargarProyectos()
+    {
+        var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+        var respuestaApi = await cliente.GetFromJsonAsync<RespuestaApi<List<ProyectoModel>>>("api/proyecto");
+
+        if (respuestaApi?.Datos != null)
+            listaProyectos = respuestaApi.Datos;
+        else
+            listaProyectos = new List<ProyectoModel>(); 
+    }
+
+    private async Task BuscarPorId()
+    {
+        LimpiarMensajes();
+
+        if (distribucionpresupuestoActual.Id <= 0)
+        {
+            mensaje = "Debe indicar un Id válido para buscar.";
+            claseAviso = "alert alert-warning";
+            return;
+        }
+
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+            var ruta = $"{urlBaseApi}/id/{distribucionpresupuestoActual.Id}";
+            RespuestaApi<List<DistribucionPresupuestoModel>>? respuesta = await cliente.GetFromJsonAsync<RespuestaApi<List<DistribucionPresupuestoModel>>>(ruta);
+            var encontrado = respuesta?.Datos?.FirstOrDefault();
+
+            if (encontrado is not null)
+            {
+                distribucionpresupuestoActual = new DistribucionPresupuestoModel
+                {
+                    Id = encontrado.Id,
+                    IdPresupuestoPadre = encontrado.IdPresupuestoPadre,
+                    IdProyectoHijo = encontrado.IdProyectoHijo,
+                    MontoAsignado = encontrado.MontoAsignado,
+                };
+                existeDistribucionPresupuesto = true;
+                textoBotonGuardar = "Actualizar";
+                mensaje = "DistribucionPresupuesto cargado en el formulario.";
+                claseAviso = "alert alert-success";
+            }
+            else
+            {
+                existeDistribucionPresupuesto = false;
+                textoBotonGuardar = "Crear";
+                mensaje = "DistribucionPresupuesto no encontrado.";
+                claseAviso = "alert alert-warning";
+            }
+        }
+        catch (Exception error)
+        {
+            existeDistribucionPresupuesto = false;
+            textoBotonGuardar = "Crear";
+            mensaje = $"Error al buscar distribucionpresupuesto: {error.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+
+    private async Task GuardarSegunEstado()
+    {
+        if (existeDistribucionPresupuesto)
+            await ActualizarDistribucionPresupuesto();
+        else
+            await CrearDistribucionPresupuesto();
+    }
+    private async Task CrearDistribucionPresupuesto()
+    {
+        LimpiarMensajes();
+        var datosParaCrear = new
+        {
+            IdPresupuestoPadre = distribucionpresupuestoActual.IdPresupuestoPadre,
+            IdProyectoHijo = distribucionpresupuestoActual.IdProyectoHijo,
+            MontoAsignado = distribucionpresupuestoActual.MontoAsignado,
+        };
+
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+            var respuesta = await cliente.PostAsJsonAsync(urlBaseApi, datosParaCrear);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                mensaje = "DistribucionPresupuesto creado correctamente.";
+                claseAviso = "alert alert-success";
+
+                await CargarDistribucionPresupuestos();
+
+                distribucionpresupuestoActual = new DistribucionPresupuestoModel();
+                existeDistribucionPresupuesto = false;
+                textoBotonGuardar = "Crear";
+            }
+            else
+            {
+                var detalle = await respuesta.Content.ReadAsStringAsync();
+                mensaje = $"No se pudo crear el distribucionpresupuesto. Detalle: {detalle}";
+                claseAviso = "alert alert-danger";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error al crear distribucionpresupuesto: {error.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+    private async Task ActualizarDistribucionPresupuesto()
+    {
+        LimpiarMensajes();
+
+        if (distribucionpresupuestoActual.Id <= 0)
+        {
+            mensaje = "Debe indicar el Id para actualizar.";
+            claseAviso = "alert alert-warning";
+            return;
+        }
+        var datosParaActualizar = new
+        {
+            IdPresupuestoPadre = distribucionpresupuestoActual.IdPresupuestoPadre,
+            IdProyectoHijo  = distribucionpresupuestoActual.IdProyectoHijo,
+            MontoAsignado = distribucionpresupuestoActual.MontoAsignado
+        };
+
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+            var ruta = $"{urlBaseApi}/id/{distribucionpresupuestoActual.Id}";
+
+            var respuesta = await cliente.PutAsJsonAsync(ruta, datosParaActualizar);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                mensaje = "DistribucionPresupuesto actualizado correctamente.";
+                claseAviso = "alert alert-success";
+
+                await CargarDistribucionPresupuestos();
+
+                existeDistribucionPresupuesto = true;
+                textoBotonGuardar = "Actualizar";
+            }
+            else
+            {
+                var detalle = await respuesta.Content.ReadAsStringAsync();
+                mensaje = $"No se pudo actualizar el distribucionpresupuesto. Detalle: {detalle}";
+                claseAviso = "alert alert-danger";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error al actualizar distribucionpresupuesto: {error.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+    private async Task EliminarDistribucionPresupuesto()
+    {
+        LimpiarMensajes();
+
+        if (distribucionpresupuestoActual.Id <= 0)
+        {
+            mensaje = "Debe indicar el Id para eliminar.";
+            claseAviso = "alert alert-warning";
+            return;
+        }
+
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+            var ruta = $"{urlBaseApi}/id/{distribucionpresupuestoActual.Id}";
+            var respuesta = await cliente.DeleteAsync(ruta);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                mensaje = "DistribucionPresupuesto eliminado correctamente.";
+                claseAviso = "alert alert-success";
+
+                await CargarDistribucionPresupuestos();
+
+                LimpiarFormulario();
+            }
+            else
+            {
+                var detalle = await respuesta.Content.ReadAsStringAsync();
+                mensaje = $"No se pudo eliminar el distribucionpresupuesto. Detalle: {detalle}";
+                claseAviso = "alert alert-danger";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error al eliminar distribucionpresupuesto: {error.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+
+    // =============================================================================
+    // AUXILIARES
+    // =============================================================================
+    private async Task ProbarConexion()
+    {
+        LimpiarMensajes();
+
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+            var respuesta = await cliente.GetAsync(urlBaseApi);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                mensaje = "Conexión con la API de DistribucionPresupuestos verificada.";
+                claseAviso = "alert alert-success";
+            }
+            else
+            {
+                mensaje = $"La API respondió con estado {(int)respuesta.StatusCode}.";
+                claseAviso = "alert alert-warning";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error de conexión a la API: {error.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+    private void CargarEnFormulario(DistribucionPresupuestoModel a)
+    {
+        distribucionpresupuestoActual = new DistribucionPresupuestoModel()
+        {
+            Id = a.Id,
+            IdPresupuestoPadre = a.IdPresupuestoPadre,
+            IdProyectoHijo = a.IdProyectoHijo,
+            MontoAsignado = a.MontoAsignado,
+        };
+
+        existeDistribucionPresupuesto = true;
+        textoBotonGuardar = "Actualizar";
+        mensaje = "DistribucionPresupuesto seleccionado desde el listado.";
+        claseAviso = "alert alert-info";
+    }
+
+    private void LimpiarMensajes()
+    {
+        mensaje = "";
+        claseAviso = "alert alert-info";
+    }
+
+    private void LimpiarFormulario()
+    {
+        distribucionpresupuestoActual = new DistribucionPresupuestoModel();
+        existeDistribucionPresupuesto = false;
+        textoBotonGuardar = "Crear";
+        LimpiarMensajes();
+    }
+}

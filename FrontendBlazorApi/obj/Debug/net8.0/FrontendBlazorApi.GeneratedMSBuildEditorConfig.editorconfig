@@ -9,91 +9,137 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = FrontendBlazorApi
 build_property.RootNamespace = FrontendBlazorApi
-build_property.ProjectDir = C:\Users\jumig\OneDrive\Escritorio\Proyecto - Aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\
+build_property.ProjectDir = C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\jumig\OneDrive\Escritorio\Proyecto - Aplicaciones\ProyectoAplicaciones\FrontendBlazorApi
+build_property.MSBuildProjectDirectory = C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi
 build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/jumig/OneDrive/Escritorio/Proyecto - Aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/App.razor]
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/App.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/jumig/OneDrive/Escritorio/Proyecto - Aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Actividad.razor]
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Actividad.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBY3RpdmlkYWQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/jumig/OneDrive/Escritorio/Proyecto - Aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Archivo.razor]
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Archivo.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBcmNoaXZvLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/jumig/OneDrive/Escritorio/Proyecto - Aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/ArchivoEntregable.razor]
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/ArchivoEntregable.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBcmNoaXZvRW50cmVnYWJsZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/jumig/OneDrive/Escritorio/Proyecto - Aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Counter.razor]
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Counter.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb3VudGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/jumig/OneDrive/Escritorio/Proyecto - Aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Entregable.razor]
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/DistribucionPresupuesto.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEaXN0cmlidWNpb25QcmVzdXB1ZXN0by5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/EjecucionPresupuesto.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFamVjdWNpb25QcmVzdXB1ZXN0by5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Entregable.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFbnRyZWdhYmxlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/jumig/OneDrive/Escritorio/Proyecto - Aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Error.razor]
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/jumig/OneDrive/Escritorio/Proyecto - Aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Estado.razor]
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Estado.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFc3RhZG8ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/jumig/OneDrive/Escritorio/Proyecto - Aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Home.razor]
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Estado_Proyecto.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFc3RhZG9fUHJveWVjdG8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/jumig/OneDrive/Escritorio/Proyecto - Aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Responsable.razor]
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/MetaEstrategica.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNZXRhRXN0cmF0ZWdpY2EucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Meta_Proyecto.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNZXRhX1Byb3llY3RvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/ObjetivoEstrategico.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xPYmpldGl2b0VzdHJhdGVnaWNvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Presupuesto.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcmVzdXB1ZXN0by5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Producto.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9kdWN0by5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Producto_Entregable.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9kdWN0b19FbnRyZWdhYmxlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Proyecto.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm95ZWN0by5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Proyecto_Producto.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm95ZWN0b19Qcm9kdWN0by5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Responsable.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZXNwb25zYWJsZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/jumig/OneDrive/Escritorio/Proyecto - Aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/ResponsableEntregable.razor]
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/ResponsableEntregable.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZXNwb25zYWJsZUVudHJlZ2FibGUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/jumig/OneDrive/Escritorio/Proyecto - Aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/TipoProducto.razor]
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/TipoProducto.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUaXBvUHJvZHVjdG8ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/jumig/OneDrive/Escritorio/Proyecto - Aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/TipoProyecto.razor]
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/TipoProyecto.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUaXBvUHJveWVjdG8ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/jumig/OneDrive/Escritorio/Proyecto - Aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/TipoResponsable.razor]
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/TipoResponsable.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUaXBvUmVzcG9uc2FibGUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/jumig/OneDrive/Escritorio/Proyecto - Aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Usuario.razor]
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/Usuario.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc3VhcmlvLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/jumig/OneDrive/Escritorio/Proyecto - Aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/VariableEstrategica.razor]
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Pages/VariableEstrategica.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xWYXJpYWJsZUVzdHJhdGVnaWNhLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/jumig/OneDrive/Escritorio/Proyecto - Aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Routes.razor]
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/jumig/OneDrive/Escritorio/Proyecto - Aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/_Imports.razor]
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/jumig/OneDrive/Escritorio/Proyecto - Aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Layout/MainLayout.razor]
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-ihevq7z9pr
 
-[C:/Users/jumig/OneDrive/Escritorio/Proyecto - Aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Layout/NavMenu.razor]
+[C:/Users/ASUS/OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM/Desktop/proyecto-aplicaciones/ProyectoAplicaciones/FrontendBlazorApi/Components/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-1wdgyf32b7

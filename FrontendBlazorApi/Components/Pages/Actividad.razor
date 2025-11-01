@@ -40,7 +40,7 @@
                 <option value="">--Seleccione un entregable--</option>
                 @foreach (var e in listaEntregables)
                 {
-                    <option value="@e.Id">@($"{e.Codigo} - {e.Titulo}")</option>
+                    <option value="@e.Id">@e.Titulo</option>
                 }
             </select>
         </div>

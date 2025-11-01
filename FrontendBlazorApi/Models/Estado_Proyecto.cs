@@ -2,7 +2,10 @@ namespace FrontendBlazorApi.Models
 {
     public class Estado_Proyecto
     {
-        public Proyecto? IdProyecto { get; set; }
-        public Estado? IdEstado { get; set; }
+        public int? IdProyecto { get; set; }
+        public int? IdEstado { get; set; }
+        public Proyecto? Proyecto { get; set; }
+        public Estado? Estado { get; set; }
+    
     }
 }
