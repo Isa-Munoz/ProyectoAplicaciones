@@ -1,11 +1,14 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace FrontendBlazorApi.Models
 {
     public class Proyecto
     {
-        public int? Id { get; set; }
-        public Proyecto? IdProyectoPadre { get; set; }
-        public Responsable? IdResponsable { get; set; }
-        public TipoProyecto? IdTipoProyecto { get; set; }
+        [Key]
+        public int Id { get; set; }
+        public int? IdProyectoPadre { get; set; }
+        public int? IdResponsable { get; set; }
+        public int? IdTipoProyecto { get; set; }
         public string? Codigo { get; set; }
         public string? Titulo { get; set; }
         public string? Descripcion { get; set; }
@@ -14,6 +17,8 @@ namespace FrontendBlazorApi.Models
         public DateTime? FechaModificacion { get; set; }
         public DateTime? FechaFinalizacion { get; set; }
         public string? RutaLogo { get; set; }
-
+        public Proyecto? ProyectoPadre { get; set; }
+        public Responsable? Responsable { get; set; }
+        public TipoProyecto? TipoProyecto { get; set; }
     }
 }
