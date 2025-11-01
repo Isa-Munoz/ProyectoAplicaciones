@@ -3,7 +3,7 @@
 @using System.Net.Http.Json
 @using FrontendBlazorApi.Models
 @using Estado_ProyectoModel = FrontendBlazorApi.Models.Estado_Proyecto
-@using ProyectoModel = FrontendBlazorApi.Models.Presupuesto
+@using ProyectoModel = FrontendBlazorApi.Models.Proyecto
 @using EstadoModel = FrontendBlazorApi.Models.Estado
 
 @inject IHttpClientFactory fabricaHttp
@@ -39,7 +39,7 @@
                 <option value="">-- Seleccione un Proyecto --</option>
                 @foreach (var proyecto in listaProyectos)
                 {
-                    <option value="@proyecto.Id">@($"Presupuesto {proyecto.Id} ({proyecto.Estado})")</option>
+                    <option value="@proyecto.Id">@proyecto.Titulo</option>
                 }
             </InputSelect>
         </div>

@@ -3,6 +3,7 @@
 @using System.Net.Http.Json
 @using FrontendBlazorApi.Models
 @using ObjetivoEstrategicoModel = FrontendBlazorApi.Models.ObjetivoEstrategico
+@using VariableEstrategicaModel = FrontendBlazorApi.Models.VariableEstrategica
 
 
 @inject IHttpClientFactory fabricaHttp
@@ -39,9 +40,9 @@
         </div>
 
         <div class="col-md-4">
-            <label class="form-label">IdVariable (FK)</label>
+            <label class="form-label">Variable (FK)</label>
             <InputSelect class="form-control" @bind-Value="objetivoestrategicoActual.IdVariable">
-                <option value="">-- Seleccione un ObjetivoEstrategico --</option>
+                <option value="">-- Seleccione una variable estrategica --</option>
                 @foreach (var variableestrategica in listaVariableEstrategicas)
                 {
                     <option value="@variableestrategica.Id">@variableestrategica.Titulo</option>
@@ -84,7 +85,7 @@ else
         <thead>
             <tr>
                 <th>Id</th>
-                <th>IdObjetivo</th>
+                <th>IdVariable</th>
                 <th>Titulo</th>
                 <th>Descripcion</th>
                 <th>Acciones</th>
@@ -115,7 +116,7 @@ else
     // VARIABLES DE ESTADO DEL COMPONENTE
     // =============================================================================
     private List<ObjetivoEstrategicoModel> listaObjetivoEstrategicos = new(); 
-    private List<ObjetivoEstrategicoModel> listaVariableEstrategicas = new();
+    private List<VariableEstrategicaModel> listaVariableEstrategicas = new();
     
     [SupplyParameterFromForm]
     private ObjetivoEstrategicoModel objetivoestrategicoActual { get; set; } = new(); 
@@ -182,12 +183,12 @@ else
     private async Task CargarVariableEstrategicas()
     {
         var cliente = fabricaHttp.CreateClient("ApiUsuarios");
-        var respuestaApi = await cliente.GetFromJsonAsync<RespuestaApi<List<ObjetivoEstrategicoModel>>>("api/objetivoestrategico");
+        var respuestaApi = await cliente.GetFromJsonAsync<RespuestaApi<List<VariableEstrategicaModel>>>("api/variableestrategica");
         if (respuestaApi?.Datos != null)
         {
-            listaObjetivoEstrategicos = respuestaApi.Datos;
+            listaVariableEstrategicas = respuestaApi.Datos;
         }
-         else { listaObjetivoEstrategicos = new List<ObjetivoEstrategicoModel>(); }
+         else { listaVariableEstrategicas = new List<VariableEstrategicaModel>(); }
     }
 
     private async Task BuscarPorId()

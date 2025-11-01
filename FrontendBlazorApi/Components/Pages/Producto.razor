@@ -40,12 +40,12 @@
         </div>
 
         <div class="col-md-4">
-            <label class="form-label">Proyecto (FK)</label>
+            <label class="form-label">TipoProducto (FK)</label>
             <InputSelect class="form-control" @bind-Value="productoActual.IdTipoProducto">
-                <option value="">-- Seleccione un Producto --</option>
+                <option value="">-- Seleccione un Tipo de Producto --</option>
                 @foreach (var tipoproducto in listaTipoProductos)
                 {
-                    <option value="@tipoproducto.Id">@($"Producto {tipoproducto.Id} ({tipoproducto.Nombre})")</option>
+                    <option value="@tipoproducto.Id">@tipoproducto.Nombre</option>
                 }
             </InputSelect>
         </div>

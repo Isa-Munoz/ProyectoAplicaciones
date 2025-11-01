@@ -42,10 +42,10 @@
         <div class="col-md-4">
             <label class="form-label">Proyecto (FK)</label>
             <InputSelect class="form-control" @bind-Value="presupuestoActual.IdProyecto">
-                <option value="">-- Seleccione un Presupuesto --</option>
-                @foreach (var presupuesto in listaPresupuestos)
+                <option value="">-- Seleccione un Proyecto --</option>
+                @foreach (var proyecto in listaProyectos)
                 {
-                    <option value="@presupuesto.Id">@($"Presupuesto {presupuesto.Id} ({presupuesto.Estado})")</option>
+                    <option value="@proyecto.Id">@proyecto.Titulo</option>
                 }
             </InputSelect>
         </div>
