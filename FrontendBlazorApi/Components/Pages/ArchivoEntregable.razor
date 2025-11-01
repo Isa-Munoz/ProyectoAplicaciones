@@ -3,90 +3,92 @@
 @using System.Net.Http.Json
 @using FrontendBlazorApi.Models
 @using ArchivoEntregableModel = FrontendBlazorApi.Models.ArchivoEntregable
+@using ArchivoModel = FrontendBlazorApi.Models.Archivo
+@using EntregableModel = FrontendBlazorApi.Models.Entregable
+
 @inject IHttpClientFactory fabricaHttp
 @rendermode InteractiveServer
 
-<PageTitle>Archivos Entregables (Relaciones)</PageTitle>
+<PageTitle>ArchivoEntregable</PageTitle>
 
-<h3>Gestión de Relaciones Archivo-Entregable</h3>
-<h4>(Tabla de Unión)</h4>
+<h3>Gestión de ArchivoEntregable</h3>
 
-@* ------------- BARRA DE ACCIONES GENERALES ------------- *@
 <div class="mb-3 d-flex gap-2">
-    <button type="button" class="btn btn-outline-primary" @onclick="CargarRelaciones">Mostrar todos</button>
+    <button type="button" class="btn btn-outline-secondary" @onclick="ProbarConexion">Probar conexión</button>
+    <button type="button" class="btn btn-outline-primary" @onclick="CargarArchivoEntregables">Mostrar todos</button>
     <button type="button" class="btn btn-outline-dark" @onclick="LimpiarFormulario">Limpiar</button>
 </div>
 
-@* ------------- MENSAJES DE ESTADO ------------- *@
 @if (!string.IsNullOrWhiteSpace(mensaje))
 {
     <div class="@claseAviso" role="alert">@mensaje</div>
 }
 
-@* ------------- FORMULARIO CREAR/ELIMINAR RELACIÓN ------------- *@
-<h4>Crear Nueva Relación</h4>
-@* La actualización no es común en tablas de unión *@
+<h4>Formulario de ArchivoEntregable</h4>
 
-<EditForm Model="relacionActual" OnValidSubmit="CrearRelacion" FormName="ArchivoEntregableForm">
+<EditForm Model="archivo_entregableActual" OnValidSubmit="GuardarSegunEstado" FormName="ArchivoEntregableForm">
     <DataAnnotationsValidator />
     <ValidationSummary />
-
     <div class="row g-3">
-        @* CAMPO 1: ArchivoId (Parte de la Clave Compuesta) *@
-        <div class="col-md-3">
-            <label class="form-label">Archivo ID</label>
-            <InputNumber class="form-control" @bind-Value="relacionActual.ArchivoId" />
+        <div class="col-md-6">
+            <label class="form-label">Archivo (FK)</label>
+            <InputSelect class="form-control" @bind-Value="archivo_entregableActual.ArchivoId">
+                <option value="">-- Seleccione un Archivo --</option>
+                @foreach (var archivo in listaArchivos)
+                {
+                    <option value="@archivo.Id">@archivo.Nombre</option>
+                }
+            </InputSelect>
         </div>
+        <div class="col-md-6">
+            <label class="form-label">Entregable (FK)</label>
+            <InputSelect class="form-control" @bind-Value="archivo_entregableActual.EntregableId">
+                <option value="">-- Seleccione un Entregable --</option>
+                @foreach (var entregable in listaEntregables)
+                {
+                    <option value="@entregable.Id">@entregable.Titulo</option>
+                }
+            </InputSelect>
+        </div>
+    </div>
 
-        @* CAMPO 2: EntregableId (Parte de la Clave Compuesta) *@
-        <div class="col-md-3">
-            <label class="form-label">Entregable ID</label>
-            <InputNumber class="form-control" @bind-Value="relacionActual.EntregableId" />
-        </div>
-
-        <div class="mt-3 d-flex flex-wrap gap-2">
-            <button type="submit" class="btn btn-primary">Crear Relación</button>
-        </div>
-        @* Para eliminar, cargamos los IDs y llamamos a Eliminar *@
-        <button type="button" class="btn btn-danger" @onclick="EliminarRelacion">Eliminar</button>
+    <div class="mt-3 d-flex flex-wrap gap-2">
+        <button type="submit" class="btn btn-primary">@textoBotonGuardar</button>
+        <button type="button" class="btn btn-warning" @onclick="ActualizarArchivoEntregable" disabled="@(!existeArchivoEntregable)">Actualizar</button>
+        <button type="button" class="btn btn-danger" @onclick="EliminarArchivoEntregable" disabled="@(!existeArchivoEntregable)">Eliminar</button>
     </div>
 </EditForm>
 
 <hr />
 
-@* ------------- LISTADO (READ) ------------- *@
 @if (cargando)
 {
-    <p><em>Cargando relaciones...</em></p>
+    <p><em>Cargando archivo_entregable...</em></p>
 }
-else if (listaRelaciones.Count == 0)
+else if (listaArchivoEntregables.Count == 0)
 {
-    <p>No hay relaciones Archivo-Entregable disponibles.</p>
+    <p>No hay archivo_entregable disponibles.</p>
 }
 else
 {
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Archivo Id (PK)</th>
-                <th>Entregable Id (PK)</th>
+                <th>IdArchivo</th>
+                <th>IdEntregable</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var r in listaRelaciones)
+            @foreach (var a in listaArchivoEntregables)
             {
                 <tr>
-                    <td>@r.ArchivoId</td>
-                    <td>@r.EntregableId</td>
+                    <td>@a.ArchivoId</td>
+                    <td>@a.EntregableId</td>
                     <td>
-                        <button type="button" class="btn btn-sm btn-outline-danger"
-                                @onclick="@(() => EliminarRelacionDirecto(r.ArchivoId, r.EntregableId))">
-                            Eliminar
-                        </button>
                         <button type="button" class="btn btn-sm btn-outline-primary"
-                                @onclick="@(() => CargarEnFormulario(r))">
-                            Cargar IDs
+                                @onclick="@(() => CargarEnFormulario(a))">
+                            Cargar
                         </button>
                     </td>
                 </tr>
@@ -96,69 +98,55 @@ else
 }
 
 @code {
-    // =============================================================================
-    // VARIABLES DE ESTADO DEL COMPONENTE
-    // =============================================================================
-    private List<ArchivoEntregableModel> listaRelaciones = new();
-
-    // Renombrado de archivoActual a relacionActual
+    private List<ArchivoEntregableModel> listaArchivoEntregables = new(); 
+    private List<ArchivoModel> listaArchivos = new();
+    private List<EntregableModel> listaEntregables = new();
+    
     [SupplyParameterFromForm]
-    private ArchivoEntregableModel relacionActual { get; set; } = new();
-
-    // Se eliminó 'existeArchivo/Usuario' porque es una tabla de unión simple
+    private ArchivoEntregableModel archivo_entregableActual { get; set; } = new(); 
+    private bool existeArchivoEntregable = false;
+    private string textoBotonGuardar = "Crear";
     private string mensaje = "";
     private string claseAviso = "alert alert-info";
     private bool cargando = false;
-
-    // Nueva ruta base
-    private const string urlBaseApi = "api/Archivo_Entregable";
+    private const string urlBaseApi = "api/archivo_entregable"; 
 
 
-    // =============================================================================
-    // CICLO DE VIDA
-    // =============================================================================
     protected override async Task OnInitializedAsync()
     {
-        await CargarRelaciones();
+        await CargarArchivoEntregables();
+        await CargarArchivos();
+        await CargarEntregables();
     }
 
-    // =============================================================================
-    // CRUDL
-    // =============================================================================
-    private async Task CargarRelaciones()
+    private async Task CargarArchivoEntregables()
     {
         try
         {
             cargando = true;
-            var cliente = fabricaHttp.CreateClient("ApiUsuarios"); 
-            var httpResponse = await cliente.GetAsync(urlBaseApi); 
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+            var httpResponse = await cliente.GetAsync(urlBaseApi);
 
             if (httpResponse.IsSuccessStatusCode)
             {
-                // Manejo de cuerpo de respuesta vacío (como se corrigió antes)
                 if (httpResponse.Content.Headers.ContentLength > 0)
                 {
-                    var respuesta = await httpResponse.Content.ReadFromJsonAsync<RespuestaApi<List<ArchivoEntregableModel>>>();
-                    listaRelaciones = respuesta?.Datos ?? new List<ArchivoEntregableModel>();
-                    mensaje = $"Se cargaron {listaRelaciones.Count} relaciones.";
+                     var respuesta = await httpResponse.Content.ReadFromJsonAsync<RespuestaApi<List<ArchivoEntregableModel>>>();
+                     listaArchivoEntregables = respuesta?.Datos ?? new List<ArchivoEntregableModel>();
+                     mensaje = $"Se cargaron {listaArchivoEntregables.Count} archivo_entregable(s).";
                 }
                 else
                 {
-                    listaRelaciones = new List<ArchivoEntregableModel>();
-                    mensaje = "La API respondió OK, pero sin contenido (lista vacía).";
+                    listaArchivoEntregables = new List<ArchivoEntregableModel>();
+                    mensaje = "La API respondió OK, pero sin contenido.";
                 }
-                claseAviso = "alert alert-success";
-            }
-            else
-            {
-                 var detalle = await httpResponse.Content.ReadAsStringAsync();
-                 mensaje = $"Error de la API ({(int)httpResponse.StatusCode}): No se pudo cargar. Detalle: {detalle.Substring(0, Math.Min(detalle.Length, 100))}...";
-                 claseAviso = "alert alert-warning";
+
+                 claseAviso = "alert alert-success";
             }
         }
         catch (Exception error)
         {
-            mensaje = $"Error al listar relaciones: {error.Message}. Verifique la conexión con la API.";
+            mensaje = $"Error al listar ArchivoEntregable: {error.Message}. Verifique la conexión con la API.";
             claseAviso = "alert alert-danger";
         }
         finally
@@ -166,23 +154,51 @@ else
             cargando = false;
         }
     }
+    private async Task CargarArchivos()
+    {
+        var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+        var respuestaApi = await cliente.GetFromJsonAsync<RespuestaApi<List<ArchivoModel>>>("api/archivo");
+        if (respuestaApi?.Datos != null)
+        {
+            listaArchivos = respuestaApi.Datos;
+        }
+           else { listaArchivos = new List<ArchivoModel>(); }
+    }
+    private async Task CargarEntregables()
+    {
+        var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+        var respuestaApi = await cliente.GetFromJsonAsync<RespuestaApi<List<EntregableModel>>>("api/entregable");
+        if (respuestaApi?.Datos != null)
+        {
+            listaEntregables = respuestaApi.Datos;
+        }
+           else { listaEntregables = new List<EntregableModel>(); }
+    }
 
-    private async Task CrearRelacion()
+    private async Task GuardarSegunEstado()
+    {
+        if (existeArchivoEntregable)
+            await ActualizarArchivoEntregable();
+        else
+            await CrearArchivoEntregable();
+    }
+
+    private async Task CrearArchivoEntregable()
     {
         LimpiarMensajes();
 
-        if (relacionActual.ArchivoId <= 0 || relacionActual.EntregableId <= 0)
+        if (archivo_entregableActual.ArchivoId <= 0 || archivo_entregableActual.EntregableId <= 0)
         {
-            mensaje = "Debe proporcionar IDs válidos para Archivo y Entregable.";
+            mensaje = "Debe seleccionar un Archivo y un Entregable válidos para crear la asociación.";
             claseAviso = "alert alert-warning";
             return;
         }
 
-        // El DTO solo necesita las dos claves
+        // IMPORTANTE: Usamos los nombres de la API (IdArchivo, IdEntregable)
         var datosParaCrear = new
         {
-            IdArchivo = relacionActual.ArchivoId,
-            IdEntregable = relacionActual.EntregableId
+            IdArchivo = archivo_entregableActual.ArchivoId,
+            IdEntregable = archivo_entregableActual.EntregableId,
         };
 
         try
@@ -192,102 +208,118 @@ else
 
             if (respuesta.IsSuccessStatusCode)
             {
-                mensaje = "Relación creada correctamente.";
+                mensaje = "Asociación Archivo-Entregable creada correctamente.";
                 claseAviso = "alert alert-success";
-                await CargarRelaciones();
-                LimpiarFormulario();
+
+                await CargarArchivoEntregables();
+                
+                archivo_entregableActual = new ArchivoEntregableModel(); 
+                existeArchivoEntregable = false;
+                textoBotonGuardar = "Crear";
             }
             else
             {
                 var detalle = await respuesta.Content.ReadAsStringAsync();
-                mensaje = $"No se pudo crear la relación. Detalle: {detalle}";
+                mensaje = $"No se pudo crear la asociación. Detalle: {detalle}";
                 claseAviso = "alert alert-danger";
             }
         }
         catch (Exception error)
         {
-            mensaje = $"Error al crear relación: {error.Message}";
+            mensaje = $"Error al crear Archivo-Entregable: {error.Message}";
             claseAviso = "alert alert-danger";
         }
     }
-    
-    // Método auxiliar para eliminar desde el listado
-    private async Task EliminarRelacionDirecto(int archivoId, int entregableId)
-    {
-        // Cargamos los IDs en el modelo actual solo para fines de UX
-        relacionActual.ArchivoId = archivoId;
-        relacionActual.EntregableId = entregableId;
-        await EliminarRelacion();
-    }
 
-    private async Task EliminarRelacion()
+    private async Task ActualizarArchivoEntregable()
     {
         LimpiarMensajes();
 
-        if (relacionActual.ArchivoId <= 0 || relacionActual.EntregableId <= 0)
+        mensaje = "La actualización no está permitida en esta tabla de relación pura. Elimine y cree la nueva asociación.";
+        claseAviso = "alert alert-warning";
+        return;
+    }
+
+    private async Task EliminarArchivoEntregable()
+    {
+        LimpiarMensajes();
+
+        if (archivo_entregableActual.ArchivoId <= 0 || archivo_entregableActual.EntregableId <= 0)
         {
-            mensaje = "Debe indicar los IDs de Archivo y Entregable para eliminar.";
+            mensaje = "Debe cargar un registro de Archivo y Entregable válido para eliminar.";
             claseAviso = "alert alert-warning";
             return;
         }
 
         try
         {
-            // 1. Define la consulta DELETE parametrizada
-            string consultaSql = "DELETE FROM Archivo_Entregable WHERE ArchivoId = @p1 AND EntregableId = @p2";
-
-            // 2. Crea el cuerpo de la solicitud para el ConsultasController
-            var cuerpoSolicitud = new
-            {
-                consulta = consultaSql,
-                parametros = new Dictionary<string, object>
-                {
-                    { "@p1", relacionActual.ArchivoId },
-                    { "@p2", relacionActual.EntregableId }
-                }
-            };
-
             var cliente = fabricaHttp.CreateClient("ApiUsuarios");
             
-            // 3. Llama al endpoint de consultas con POST en lugar de DELETE
-            var rutaConsulta = "api/consultas/ejecutarconsultaparametrizada";
-            var respuesta = await cliente.PostAsJsonAsync(rutaConsulta, cuerpoSolicitud);
+            // RUTA CLAVE COMPUESTA: Se usa la combinación para eliminar el registro exacto
+            var ruta = $"{urlBaseApi}/{archivo_entregableActual.ArchivoId}/{archivo_entregableActual.EntregableId}";
+            
+            var respuesta = await cliente.DeleteAsync(ruta);
 
             if (respuesta.IsSuccessStatusCode)
             {
-                mensaje = $"Relación eliminada correctamente.";
+                mensaje = "Asociación Archivo-Entregable eliminada correctamente.";
                 claseAviso = "alert alert-success";
-                await CargarRelaciones();
+
+                await CargarArchivoEntregables();
+
                 LimpiarFormulario();
             }
             else
             {
                 var detalle = await respuesta.Content.ReadAsStringAsync();
-                mensaje = $"No se pudo eliminar la relación. Detalle: {detalle}";
+                mensaje = $"No se pudo eliminar la asociación. Detalle: {detalle}";
                 claseAviso = "alert alert-danger";
             }
         }
         catch (Exception error)
         {
-            mensaje = $"Error al eliminar relación: {error.Message}";
+            mensaje = $"Error al eliminar Archivo-Entregable: {error.Message}";
             claseAviso = "alert alert-danger";
         }
     }
-    
-    // Se eliminó BuscarPorId y ActualizarRelacion, ya que no son típicos en tablas de unión.
 
-    // =============================================================================
-    // AUXILIARES
-    // =============================================================================
-
-    private void CargarEnFormulario(ArchivoEntregableModel r)
+    private async Task ProbarConexion()
     {
-        relacionActual = new ArchivoEntregableModel()
+        LimpiarMensajes();
+
+        try
         {
-            ArchivoId = r.ArchivoId,
-            EntregableId = r.EntregableId
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+            var respuesta = await cliente.GetAsync(urlBaseApi);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                mensaje = "Conexión con la API de ArchivoEntregable verificada.";
+                claseAviso = "alert alert-success";
+            }
+            else
+            {
+                mensaje = $"La API respondió con estado {(int)respuesta.StatusCode}.";
+                claseAviso = "alert alert-warning";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error de conexión a la API: {error.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+    private void CargarEnFormulario(ArchivoEntregableModel a)
+    {
+        archivo_entregableActual = new ArchivoEntregableModel()
+        {
+            ArchivoId=a.ArchivoId,
+            EntregableId = a.EntregableId
         };
-        mensaje = "IDs cargados en el formulario.";
+
+        existeArchivoEntregable = true;
+        textoBotonGuardar = "Actualizar";
+        mensaje = "Archivo-Entregable seleccionado desde el listado. (Recuerde que la actualización no está soportada).";
         claseAviso = "alert alert-info";
     }
 
@@ -299,7 +331,9 @@ else
 
     private void LimpiarFormulario()
     {
-        relacionActual = new ArchivoEntregableModel();
+        archivo_entregableActual = new ArchivoEntregableModel();
+        existeArchivoEntregable = false;
+        textoBotonGuardar = "Crear";
         LimpiarMensajes();
     }
 }

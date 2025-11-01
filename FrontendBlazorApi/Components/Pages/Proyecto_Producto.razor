@@ -1,0 +1,388 @@
+@page "/proyecto_productos"
+
+@using System.Net.Http.Json
+@using FrontendBlazorApi.Models
+@using Proyecto_ProductoModel = FrontendBlazorApi.Models.Proyecto_Producto
+@using ProyectoModel = FrontendBlazorApi.Models.Proyecto
+@using ProductoModel = FrontendBlazorApi.Models.Producto
+
+@inject IHttpClientFactory fabricaHttp
+@rendermode InteractiveServer
+
+<PageTitle>Proyecto_Producto</PageTitle>
+
+<h3>Gestión de Proyecto_Producto</h3>
+
+<div class="mb-3 d-flex gap-2">
+    <button type="button" class="btn btn-outline-secondary" @onclick="ProbarConexion">Probar conexión</button>
+    <button type="button" class="btn btn-outline-primary" @onclick="CargarProyecto_Productos">Mostrar todos</button>
+    <button type="button" class="btn btn-outline-dark" @onclick="LimpiarFormulario">Limpiar</button>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(mensaje))
+{
+    <div class="@claseAviso" role="alert">@mensaje</div>
+}
+
+<h4>Formulario de Proyecto_Producto</h4>
+
+<EditForm Model="proyecto_productoActual" OnValidSubmit="GuardarSegunEstado" FormName="Proyecto_ProductoForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label class="form-label">Proyecto (FK)</label>
+            <InputSelect class="form-control" @bind-Value="proyecto_productoActual.IdProyecto">
+                <option value="">-- Seleccione un Proyecto --</option>
+                @foreach (var proyecto in listaProyectos)
+                {
+                    <option value="@proyecto.Id">@proyecto.Titulo</option>
+                }
+            </InputSelect>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Producto (FK)</label>
+            <InputSelect class="form-control" @bind-Value="proyecto_productoActual.IdProducto">
+                <option value="">-- Seleccione un Producto --</option>
+                @foreach (var producto in listaProductos)
+                {
+                    <option value="@producto.Id">@producto.Titulo</option>
+                }
+            </InputSelect>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Fecha de Asociación</label>
+            <InputDate class="form-control" @bind-Value="proyecto_productoActual.FechaAsociacion" />
+        </div>
+    </div>
+
+    <div class="mt-3 d-flex flex-wrap gap-2">
+        <button type="submit" class="btn btn-primary">@textoBotonGuardar</button>
+        <button type="button" class="btn btn-warning" @onclick="ActualizarProyecto_Producto" disabled="@(!existeProyecto_Producto)">Actualizar</button>
+        <button type="button" class="btn btn-danger" @onclick="EliminarProyecto_Producto" disabled="@(!existeProyecto_Producto)">Eliminar</button>
+    </div>
+</EditForm>
+
+<hr />
+
+@if (cargando)
+{
+    <p><em>Cargando proyecto_producto...</em></p>
+}
+else if (listaProyecto_Productos.Count == 0)
+{
+    <p>No hay proyecto_producto disponibles.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>IdProyecto</th>
+                <th>IdProducto</th>
+                <th>Fecha Asociación</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in listaProyecto_Productos)
+            {
+                <tr>
+                    <td>@a.IdProyecto</td>
+                    <td>@a.IdProducto</td>
+                    <td>@(a.FechaAsociacion?.ToShortDateString())</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                @onclick="@(() => CargarEnFormulario(a))">
+                            Cargar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Proyecto_ProductoModel> listaProyecto_Productos = new(); 
+    private List<ProyectoModel> listaProyectos = new();
+    private List<ProductoModel> listaProductos = new();
+    
+    [SupplyParameterFromForm]
+    private Proyecto_ProductoModel proyecto_productoActual { get; set; } = new(); 
+    private bool existeProyecto_Producto = false;
+    private string textoBotonGuardar = "Crear";
+    private string mensaje = "";
+    private string claseAviso = "alert alert-info";
+    private bool cargando = false;
+    private const string urlBaseApi = "api/proyecto_producto"; 
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarProyecto_Productos();
+        await CargarProyectos();
+        await CargarProductos();
+    }
+
+    private async Task CargarProyecto_Productos()
+    {
+        try
+        {
+            cargando = true;
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+            var httpResponse = await cliente.GetAsync(urlBaseApi);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                if (httpResponse.Content.Headers.ContentLength > 0)
+                {
+                     var respuesta = await httpResponse.Content.ReadFromJsonAsync<RespuestaApi<List<Proyecto_ProductoModel>>>();
+                     listaProyecto_Productos = respuesta?.Datos ?? new List<Proyecto_ProductoModel>();
+                     mensaje = $"Se cargaron {listaProyecto_Productos.Count} proyecto_producto(s).";
+                }
+                else
+                {
+                    listaProyecto_Productos = new List<Proyecto_ProductoModel>();
+                    mensaje = "La API respondió OK, pero sin contenido.";
+                }
+
+                 claseAviso = "alert alert-success";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error al listar Proyecto_Producto: {error.Message}. Verifique la conexión con la API.";
+            claseAviso = "alert alert-danger";
+        }
+        finally
+        {
+            cargando = false;
+        }
+    }
+    private async Task CargarProyectos()
+    {
+        var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+        var respuestaApi = await cliente.GetFromJsonAsync<RespuestaApi<List<ProyectoModel>>>("api/proyecto");
+        if (respuestaApi?.Datos != null)
+        {
+            listaProyectos = respuestaApi.Datos;
+        }
+           else { listaProyectos = new List<ProyectoModel>(); }
+    }
+    private async Task CargarProductos()
+    {
+        var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+        var respuestaApi = await cliente.GetFromJsonAsync<RespuestaApi<List<ProductoModel>>>("api/producto");
+        if (respuestaApi?.Datos != null)
+        {
+            listaProductos = respuestaApi.Datos;
+        }
+           else { listaProductos = new List<ProductoModel>(); }
+    }
+
+    private async Task GuardarSegunEstado()
+    {
+        if (existeProyecto_Producto)
+            await ActualizarProyecto_Producto();
+        else
+            await CrearProyecto_Producto();
+    }
+
+    private async Task CrearProyecto_Producto()
+    {
+        LimpiarMensajes();
+
+        if (proyecto_productoActual.IdProyecto == null || proyecto_productoActual.IdProyecto <= 0 ||
+            proyecto_productoActual.IdProducto == null || proyecto_productoActual.IdProducto <= 0)
+        {
+            mensaje = "Debe seleccionar un Proyecto y un Producto válidos para crear la asociación.";
+            claseAviso = "alert alert-warning";
+            return;
+        }
+
+        var datosParaCrear = new
+        {
+            IdProyecto = proyecto_productoActual.IdProyecto,
+            IdProducto = proyecto_productoActual.IdProducto,
+            FechaAsociacion = proyecto_productoActual.FechaAsociacion
+        };
+
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+            var respuesta = await cliente.PostAsJsonAsync(urlBaseApi, datosParaCrear);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                mensaje = "Asociación Proyecto-Producto creada correctamente.";
+                claseAviso = "alert alert-success";
+
+                await CargarProyecto_Productos();
+                
+                proyecto_productoActual = new Proyecto_ProductoModel(); 
+                existeProyecto_Producto = false;
+                textoBotonGuardar = "Crear";
+            }
+            else
+            {
+                var detalle = await respuesta.Content.ReadAsStringAsync();
+                mensaje = $"No se pudo crear la asociación. Detalle: {detalle}";
+                claseAviso = "alert alert-danger";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error al crear Proyecto-Producto: {error.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+
+    private async Task ActualizarProyecto_Producto()
+    {
+        LimpiarMensajes();
+
+        if (proyecto_productoActual.IdProyecto == null || proyecto_productoActual.IdProyecto <= 0 || 
+            proyecto_productoActual.IdProducto == null || proyecto_productoActual.IdProducto <= 0)
+        {
+            mensaje = "Debe seleccionar el Proyecto y el Producto para actualizar la fecha.";
+            claseAviso = "alert alert-warning";
+            return;
+        }
+
+        var datosParaActualizar = new
+        {
+            IdProyecto = proyecto_productoActual.IdProyecto,
+            IdProducto = proyecto_productoActual.IdProducto,
+            FechaAsociacion = proyecto_productoActual.FechaAsociacion
+        };
+
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+            
+            var ruta = $"{urlBaseApi}/{proyecto_productoActual.IdProyecto}/{proyecto_productoActual.IdProducto}"; 
+
+            var respuesta = await cliente.PutAsJsonAsync(ruta, datosParaActualizar);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                mensaje = "Fecha de asociación actualizada correctamente.";
+                claseAviso = "alert alert-success";
+
+                await CargarProyecto_Productos();
+
+                existeProyecto_Producto = true;
+                textoBotonGuardar = "Actualizar";
+            }
+            else
+            {
+                var detalle = await respuesta.Content.ReadAsStringAsync();
+                mensaje = $"No se pudo actualizar la asociación. Detalle: {detalle}";
+                claseAviso = "alert alert-danger";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error al actualizar Proyecto-Producto: {error.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+
+    private async Task EliminarProyecto_Producto()
+    {
+        LimpiarMensajes();
+
+        if (proyecto_productoActual.IdProyecto == null || proyecto_productoActual.IdProyecto <= 0 ||
+            proyecto_productoActual.IdProducto == null || proyecto_productoActual.IdProducto <= 0)
+        {
+            mensaje = "Debe cargar un registro de Proyecto y Producto válido para eliminar.";
+            claseAviso = "alert alert-warning";
+            return;
+        }
+
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+            
+            var ruta = $"{urlBaseApi}/{proyecto_productoActual.IdProyecto}/{proyecto_productoActual.IdProducto}";
+            
+            var respuesta = await cliente.DeleteAsync(ruta);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                mensaje = "Asociación Proyecto-Producto eliminada correctamente.";
+                claseAviso = "alert alert-success";
+
+                await CargarProyecto_Productos();
+
+                LimpiarFormulario();
+            }
+            else
+            {
+                var detalle = await respuesta.Content.ReadAsStringAsync();
+                mensaje = $"No se pudo eliminar la asociación. Detalle: {detalle}";
+                claseAviso = "alert alert-danger";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error al eliminar Proyecto-Producto: {error.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+
+    private async Task ProbarConexion()
+    {
+        LimpiarMensajes();
+
+        try
+        {
+            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+            var respuesta = await cliente.GetAsync(urlBaseApi);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                mensaje = "Conexión con la API de Proyecto_Producto verificada.";
+                claseAviso = "alert alert-success";
+            }
+            else
+            {
+                mensaje = $"La API respondió con estado {(int)respuesta.StatusCode}.";
+                claseAviso = "alert alert-warning";
+            }
+        }
+        catch (Exception error)
+        {
+            mensaje = $"Error de conexión a la API: {error.Message}";
+            claseAviso = "alert alert-danger";
+        }
+    }
+    private void CargarEnFormulario(Proyecto_ProductoModel a)
+    {
+        proyecto_productoActual = new Proyecto_ProductoModel()
+        {
+            IdProyecto=a.IdProyecto,
+            IdProducto = a.IdProducto,
+            FechaAsociacion = a.FechaAsociacion
+        };
+
+        existeProyecto_Producto = true;
+        textoBotonGuardar = "Actualizar";
+        mensaje = "Proyecto-Producto seleccionado desde el listado.";
+        claseAviso = "alert alert-info";
+    }
+
+    private void LimpiarMensajes()
+    {
+        mensaje = "";
+        claseAviso = "alert alert-info";
+    }
+
+    private void LimpiarFormulario()
+    {
+        proyecto_productoActual = new Proyecto_ProductoModel();
+        existeProyecto_Producto = false;
+        textoBotonGuardar = "Crear";
+        LimpiarMensajes();
+    }
+}

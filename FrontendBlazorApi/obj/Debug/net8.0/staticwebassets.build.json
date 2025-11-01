@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "9NCoVyCshO3zNXyZDfifESObfLLxObJj7zalqo7fAlM=",
+  "Hash": "5RQtxkJtgVQwOf8/U6Tbuj6jr8JS2tjFEP64tNn41l0=",
   "Source": "FrontendBlazorApi",
   "BasePath": "_content/FrontendBlazorApi",
   "Mode": "Default",
@@ -31,8 +31,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ApplicationBundle",
-      "Fingerprint": "ccznj10djk",
-      "Integrity": "rOkuZSwS7iwNa5yoK/cmunfF4vx2K2Zv919hdVsaC/M=",
+      "Fingerprint": "i9mh63rcyf",
+      "Integrity": "ChO6O8WW60SIBdN7TBAtuVgjYmU26psk7+TztRB1Fps=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\bundle\\FrontendBlazorApi.styles.css"
@@ -52,8 +52,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ProjectBundle",
-      "Fingerprint": "ccznj10djk",
-      "Integrity": "rOkuZSwS7iwNa5yoK/cmunfF4vx2K2Zv919hdVsaC/M=",
+      "Fingerprint": "i9mh63rcyf",
+      "Integrity": "ChO6O8WW60SIBdN7TBAtuVgjYmU26psk7+TztRB1Fps=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\FrontendBlazorApi.bundle.scp.css"
@@ -94,8 +94,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "6gzpyzhau4",
-      "Integrity": "SiIVMGgRhdXjKSTIddX7mh9IbOXVcwQWc7/p4nS6D/0=",
+      "Fingerprint": "cjv4e748cp",
+      "Integrity": "qAJT49vPYacP2IxHFJESNTtDwkeQPwC0esbIdLeSqEE=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css"
@@ -227,7 +227,7 @@
       ]
     },
     {
-      "Route": "bootstrap/bootstrap.min.6gzpyzhau4.css",
+      "Route": "bootstrap/bootstrap.min.cjv4e748cp.css",
       "AssetFile": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\wwwroot\\bootstrap\\bootstrap.min.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -237,7 +237,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "162726"
+          "Value": "254482"
         },
         {
           "Name": "Content-Type",
@@ -245,11 +245,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"SiIVMGgRhdXjKSTIddX7mh9IbOXVcwQWc7/p4nS6D/0=\""
+          "Value": "\"qAJT49vPYacP2IxHFJESNTtDwkeQPwC0esbIdLeSqEE=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 03 Oct 2025 16:11:08 GMT"
+          "Value": "Sat, 01 Nov 2025 15:40:48 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -259,7 +259,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "6gzpyzhau4"
+          "Value": "cjv4e748cp"
         },
         {
           "Name": "label",
@@ -267,7 +267,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-SiIVMGgRhdXjKSTIddX7mh9IbOXVcwQWc7/p4nS6D/0="
+          "Value": "sha256-qAJT49vPYacP2IxHFJESNTtDwkeQPwC0esbIdLeSqEE="
         }
       ]
     },
@@ -282,7 +282,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "162726"
+          "Value": "254482"
         },
         {
           "Name": "Content-Type",
@@ -290,11 +290,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"SiIVMGgRhdXjKSTIddX7mh9IbOXVcwQWc7/p4nS6D/0=\""
+          "Value": "\"qAJT49vPYacP2IxHFJESNTtDwkeQPwC0esbIdLeSqEE=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 03 Oct 2025 16:11:08 GMT"
+          "Value": "Sat, 01 Nov 2025 15:40:48 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -304,7 +304,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-SiIVMGgRhdXjKSTIddX7mh9IbOXVcwQWc7/p4nS6D/0="
+          "Value": "sha256-qAJT49vPYacP2IxHFJESNTtDwkeQPwC0esbIdLeSqEE="
         }
       ]
     },
@@ -483,7 +483,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "5917"
+          "Value": "10688"
         },
         {
           "Name": "Content-Type",
@@ -491,11 +491,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"rOkuZSwS7iwNa5yoK/cmunfF4vx2K2Zv919hdVsaC/M=\""
+          "Value": "\"ChO6O8WW60SIBdN7TBAtuVgjYmU26psk7+TztRB1Fps=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 31 Oct 2025 21:26:03 GMT"
+          "Value": "Sat, 01 Nov 2025 18:20:14 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -505,12 +505,12 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-rOkuZSwS7iwNa5yoK/cmunfF4vx2K2Zv919hdVsaC/M="
+          "Value": "sha256-ChO6O8WW60SIBdN7TBAtuVgjYmU26psk7+TztRB1Fps="
         }
       ]
     },
     {
-      "Route": "FrontendBlazorApi.ccznj10djk.bundle.scp.css",
+      "Route": "FrontendBlazorApi.i9mh63rcyf.bundle.scp.css",
       "AssetFile": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\FrontendBlazorApi.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -520,7 +520,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "5917"
+          "Value": "10688"
         },
         {
           "Name": "Content-Type",
@@ -528,11 +528,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"rOkuZSwS7iwNa5yoK/cmunfF4vx2K2Zv919hdVsaC/M=\""
+          "Value": "\"ChO6O8WW60SIBdN7TBAtuVgjYmU26psk7+TztRB1Fps=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 31 Oct 2025 21:26:03 GMT"
+          "Value": "Sat, 01 Nov 2025 18:20:14 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -542,7 +542,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "ccznj10djk"
+          "Value": "i9mh63rcyf"
         },
         {
           "Name": "label",
@@ -550,12 +550,12 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-rOkuZSwS7iwNa5yoK/cmunfF4vx2K2Zv919hdVsaC/M="
+          "Value": "sha256-ChO6O8WW60SIBdN7TBAtuVgjYmU26psk7+TztRB1Fps="
         }
       ]
     },
     {
-      "Route": "FrontendBlazorApi.ccznj10djk.styles.css",
+      "Route": "FrontendBlazorApi.i9mh63rcyf.styles.css",
       "AssetFile": "C:\\Users\\ASUS\\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\\Desktop\\proyecto-aplicaciones\\ProyectoAplicaciones\\FrontendBlazorApi\\obj\\Debug\\net8.0\\scopedcss\\bundle\\FrontendBlazorApi.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -565,7 +565,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "5917"
+          "Value": "10688"
         },
         {
           "Name": "Content-Type",
@@ -573,11 +573,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"rOkuZSwS7iwNa5yoK/cmunfF4vx2K2Zv919hdVsaC/M=\""
+          "Value": "\"ChO6O8WW60SIBdN7TBAtuVgjYmU26psk7+TztRB1Fps=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 31 Oct 2025 21:26:03 GMT"
+          "Value": "Sat, 01 Nov 2025 18:20:14 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -587,7 +587,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "ccznj10djk"
+          "Value": "i9mh63rcyf"
         },
         {
           "Name": "label",
@@ -595,7 +595,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-rOkuZSwS7iwNa5yoK/cmunfF4vx2K2Zv919hdVsaC/M="
+          "Value": "sha256-ChO6O8WW60SIBdN7TBAtuVgjYmU26psk7+TztRB1Fps="
         }
       ]
     },
@@ -610,7 +610,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "5917"
+          "Value": "10688"
         },
         {
           "Name": "Content-Type",
@@ -618,11 +618,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"rOkuZSwS7iwNa5yoK/cmunfF4vx2K2Zv919hdVsaC/M=\""
+          "Value": "\"ChO6O8WW60SIBdN7TBAtuVgjYmU26psk7+TztRB1Fps=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 31 Oct 2025 21:26:03 GMT"
+          "Value": "Sat, 01 Nov 2025 18:20:14 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -632,7 +632,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-rOkuZSwS7iwNa5yoK/cmunfF4vx2K2Zv919hdVsaC/M="
+          "Value": "sha256-ChO6O8WW60SIBdN7TBAtuVgjYmU26psk7+TztRB1Fps="
         }
       ]
     }
