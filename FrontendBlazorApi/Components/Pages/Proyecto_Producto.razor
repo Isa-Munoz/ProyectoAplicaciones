@@ -237,57 +237,63 @@ else
         }
     }
 
-    private async Task ActualizarProyecto_Producto()
+private async Task ActualizarProyecto_Producto()
+{
+    LimpiarMensajes();
+
+    if (proyecto_productoActual.IdProyecto == null || proyecto_productoActual.IdProyecto <= 0 ||
+        proyecto_productoActual.IdProducto == null || proyecto_productoActual.IdProducto <= 0)
     {
-        LimpiarMensajes();
+        mensaje = "Debe seleccionar el Proyecto y el Producto para actualizar la fecha.";
+        claseAviso = "alert alert-warning";
+        return;
+    }
 
-        if (proyecto_productoActual.IdProyecto == null || proyecto_productoActual.IdProyecto <= 0 || 
-            proyecto_productoActual.IdProducto == null || proyecto_productoActual.IdProducto <= 0)
+    // Datos a actualizar (incluye claves y fecha)
+    var datosParaActualizar = new Dictionary<string, object?>
+    {
+        { "IdProyecto", proyecto_productoActual.IdProyecto },
+        { "IdProducto", proyecto_productoActual.IdProducto },
+        { "FechaAsociacion", proyecto_productoActual.FechaAsociacion }
+    };
+
+    var ruta = $"{urlBaseApi}/api/Proyecto_Producto/compuesto" +
+           $"?IdProyecto={proyecto_productoActual.IdProyecto}" +
+           $"&IdProducto={proyecto_productoActual.IdProducto}";
+
+    try
+    {
+        var cliente = fabricaHttp.CreateClient("ApiUsuarios");
+
+        var respuesta = await cliente.PutAsJsonAsync(ruta, datosParaActualizar);
+
+        if (respuesta.IsSuccessStatusCode)
         {
-            mensaje = "Debe seleccionar el Proyecto y el Producto para actualizar la fecha.";
-            claseAviso = "alert alert-warning";
-            return;
+            mensaje = "Asociación actualizada correctamente.";
+            claseAviso = "alert alert-success";
+
+            await CargarProyecto_Productos();
+            existeProyecto_Producto = true;
+            textoBotonGuardar = "Actualizar";
         }
-
-        var datosParaActualizar = new
+        else
         {
-            IdProyecto = proyecto_productoActual.IdProyecto,
-            IdProducto = proyecto_productoActual.IdProducto,
-            FechaAsociacion = proyecto_productoActual.FechaAsociacion
-        };
+            var detalle = await respuesta.Content.ReadAsStringAsync();
+            Console.WriteLine($"HTTP {respuesta.StatusCode}: {detalle}");
 
-        try
-        {
-            var cliente = fabricaHttp.CreateClient("ApiUsuarios");
-            
-            var ruta = $"{urlBaseApi}/{proyecto_productoActual.IdProyecto}/{proyecto_productoActual.IdProducto}"; 
+            if (string.IsNullOrWhiteSpace(detalle))
+                detalle = respuesta.ReasonPhrase;
 
-            var respuesta = await cliente.PutAsJsonAsync(ruta, datosParaActualizar);
-
-            if (respuesta.IsSuccessStatusCode)
-            {
-                mensaje = "Fecha de asociación actualizada correctamente.";
-                claseAviso = "alert alert-success";
-
-                await CargarProyecto_Productos();
-
-                existeProyecto_Producto = true;
-                textoBotonGuardar = "Actualizar";
-            }
-            else
-            {
-                var detalle = await respuesta.Content.ReadAsStringAsync();
-                mensaje = $"No se pudo actualizar la asociación. Detalle: {detalle}";
-                claseAviso = "alert alert-danger";
-            }
-        }
-        catch (Exception error)
-        {
-            mensaje = $"Error al actualizar Proyecto-Producto: {error.Message}";
+            mensaje = $"No se pudo actualizar la asociación. Detalle: {detalle}";
             claseAviso = "alert alert-danger";
         }
     }
-
+    catch (Exception error)
+    {
+        mensaje = $"Error al actualizar Proyecto-Producto: {error.Message}";
+        claseAviso = "alert alert-danger";
+    }
+}
     private async Task EliminarProyecto_Producto()
     {
         LimpiarMensajes();
@@ -304,7 +310,7 @@ else
         {
             var cliente = fabricaHttp.CreateClient("ApiUsuarios");
             
-            var ruta = $"{urlBaseApi}/{proyecto_productoActual.IdProyecto}/{proyecto_productoActual.IdProducto}";
+            var ruta = $"{urlBaseApi}?IdProyecto={proyecto_productoActual.IdProyecto}&IdProducto={proyecto_productoActual.IdProducto}";
             
             var respuesta = await cliente.DeleteAsync(ruta);
 

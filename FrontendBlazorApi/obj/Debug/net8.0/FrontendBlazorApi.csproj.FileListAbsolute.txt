@@ -125,6 +125,12 @@ E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Deb
 E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.pdb
 E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.genruntimeconfig.cache
 E:\U\2025-2\Aplicaciones\Proyecto\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\ref\FrontendBlazorApi.dll
+C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.AssemblyInfoInputs.cache
+C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.AssemblyInfo.cs
+C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.csproj.CoreCompileInputs.cache
+C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.sourcelink.json
 C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\bin\Debug\net8.0\appsettings.json
 C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\bin\Debug\net8.0\FrontendBlazorApi.staticwebassets.runtime.json
@@ -134,14 +140,9 @@ C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proye
 C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\bin\Debug\net8.0\FrontendBlazorApi.runtimeconfig.json
 C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\bin\Debug\net8.0\FrontendBlazorApi.dll
 C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\bin\Debug\net8.0\FrontendBlazorApi.pdb
-C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.AssemblyInfoInputs.cache
-C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.AssemblyInfo.cs
-C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.csproj.CoreCompileInputs.cache
-C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.sourcelink.json
 C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\scopedcss\Components\Layout\MainLayout.razor.rz.scp.css
 C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\scopedcss\Components\Layout\NavMenu.razor.rz.scp.css
+C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\scopedcss\Components\Pages\Home.razor.rz.scp.css
 C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\scopedcss\bundle\FrontendBlazorApi.styles.css
 C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\scopedcss\projectbundle\FrontendBlazorApi.bundle.scp.css
 C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\staticwebassets.build.json
@@ -158,4 +159,3 @@ C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proye
 C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.pdb
 C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\FrontendBlazorApi.genruntimeconfig.cache
 C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\ref\FrontendBlazorApi.dll
-C:\Users\ASUS\OneDrive - INSTITUTO TECNOLOGICO METROPOLITANO - ITM\Desktop\proyecto-aplicaciones\ProyectoAplicaciones\FrontendBlazorApi\obj\Debug\net8.0\scopedcss\Components\Pages\Home.razor.rz.scp.css

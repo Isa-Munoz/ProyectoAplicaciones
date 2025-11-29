@@ -256,8 +256,7 @@ else
             var cliente = fabricaHttp.CreateClient("ApiUsuarios");
             
             // RUTA CLAVE COMPUESTA: Se usa la combinación para eliminar el registro exacto
-            var ruta = $"{urlBaseApi}/{archivo_entregableActual.ArchivoId}/{archivo_entregableActual.EntregableId}";
-            
+            var ruta = $"{urlBaseApi}?IdArchivo={archivo_entregableActual.ArchivoId}&IdEntregable={archivo_entregableActual.EntregableId}";
             var respuesta = await cliente.DeleteAsync(ruta);
 
             if (respuesta.IsSuccessStatusCode)
