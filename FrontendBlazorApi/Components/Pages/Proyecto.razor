@@ -114,62 +114,63 @@
 <hr />
 
 @* ------------- LISTADO (READ/LIST) ------------- *@
-@if (cargando)
-{
-    <p><em>Cargando proyecto...</em></p>
-}
-else if (listaProyectos.Count == 0)
-{
-    <p>No hay proyecto disponibles.</p>
-}
-else
-{
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>IdProyectoPadre</th>
-                <th>IdResponsable</th>
-                <th>IdTipoProyecto</th>
-                <th>Codigo</th>
-                <th>Titulo</th>
-                <th>Descripcion</th>
-                <th>FechaInicio</th>
-                <th>FechaFinPrevista</th>
-                <th>FechaModificacion</th>
-                <th>FechaFinalizacion</th>
-                <th>RutaLogo</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var a in listaProyectos)
-            {
+<div class="table-responsive-wrapper">
+    @if (cargando)
+    {
+        <p><em>Cargando proyecto...</em></p>
+    }
+    else if (listaProyectos.Count == 0)
+    {
+        <p>No hay proyecto disponibles.</p>
+    }
+    else
+    {
+        <table class="table table-striped table-hover project-table">
+            <thead>
                 <tr>
-                    <td>@a.Id</td>
-                    <td>@a.IdProyectoPadre</td>
-                    <td>@a.IdResponsable</td>
-                    <td>@a.IdTipoProyecto</td>
-                    <td>@a.Codigo</td>
-                    <td>@a.Titulo</td>
-                    <td>@a.Descripcion</td>
-                    <td>@a.FechaInicio</td>
-                    <td>@a.FechaFinPrevista</td>
-                    <td>@a.FechaModificacion</td>
-                    <td>@a.FechaFinalizacion</td>
-                    <td>@a.RutaLogo</td>
-                    <td>
-                        <button type="button" class="btn btn-sm btn-outline-primary"
-                                @onclick="@(() => CargarEnFormulario(a))">
-                            Cargar
-                        </button>
-                    </td>
+                    <th>Id</th>
+                    <th>IdProyectoPadre</th>
+                    <th>IdResponsable</th>
+                    <th>IdTipoProyecto</th>
+                    <th>Codigo</th>
+                    <th>Titulo</th>
+                    <th>Descripcion</th>
+                    <th>FechaInicio</th>
+                    <th>FechaFinPrevista</th>
+                    <th>FechaModificacion</th>
+                    <th>FechaFinalizacion</th>
+                    <th>RutaLogo</th>
+                    <th>Acciones</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
-
+            </thead>
+            <tbody>
+                @foreach (var a in listaProyectos)
+                {
+                    <tr>
+                        <td>@a.Id</td>
+                        <td>@a.IdProyectoPadre</td>
+                        <td>@a.IdResponsable</td>
+                        <td>@a.IdTipoProyecto</td>
+                        <td>@a.Codigo</td>
+                        <td>@a.Titulo</td>
+                        <td>@a.Descripcion</td>
+                        <td>@a.FechaInicio</td>
+                        <td>@a.FechaFinPrevista</td>
+                        <td>@a.FechaModificacion</td>
+                        <td>@a.FechaFinalizacion</td>
+                        <td>@a.RutaLogo</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                    @onclick="@(() => CargarEnFormulario(a))">
+                                Cargar
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
 @code {
     // =============================================================================
     // VARIABLES DE ESTADO DEL COMPONENTE

@@ -321,7 +321,7 @@ else
         {
             var cliente = fabricaHttp.CreateClient("ApiUsuarios");
             
-            var ruta = $"{urlBaseApi}/{producto_entregableActual.IdProducto}/{producto_entregableActual.IdEntregable}";
+            var ruta = $"{urlBaseApi}?IdProducto={producto_entregableActual.IdProducto}&IdEntregable={producto_entregableActual.IdEntregable}";
             
             var respuesta = await cliente.DeleteAsync(ruta);
 

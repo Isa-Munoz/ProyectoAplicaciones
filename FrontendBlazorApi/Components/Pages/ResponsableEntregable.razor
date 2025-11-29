@@ -265,7 +265,7 @@ else
             };
 
             var cliente = fabricaHttp.CreateClient("ApiUsuarios");
-            var rutaConsulta = "api/consultas/ejecutarconsultaparametrizada";
+            var rutaConsulta = $"{urlBaseApi}?ResponsableId={relacionActual.ResponsableId}&EntregableId={relacionActual.EntregableId}";
             var respuesta = await cliente.PostAsJsonAsync(rutaConsulta, cuerpoSolicitud);
 
             if (respuesta.IsSuccessStatusCode)
