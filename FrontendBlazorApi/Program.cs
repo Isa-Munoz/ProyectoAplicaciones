@@ -2,78 +2,113 @@
 // Archivo de arranque principal de la aplicación Blazor Web App (plantilla moderna unificada).
 // Aquí se configuran los servicios y se define cómo se ejecuta la aplicación.
 
-using FrontendBlazorApi.Components;          // Importa el espacio de nombres donde está App.razor
-using Microsoft.AspNetCore.Components;       // Librerías base de Blazor
-using Microsoft.AspNetCore.Components.Web;   // Funcionalidades adicionales de renderizado
+
+using FrontendBlazorApi.Components; 
+using Microsoft.AspNetCore.Components; 
+using Microsoft.AspNetCore.Components.Web; 
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Components.Authorization;
+using FrontendBlazorApi.Servicios; // Asegúrate de tener este 'using' si los servicios están en esa carpeta
 
 var builder = WebApplication.CreateBuilder(args);
 
-// -------------------------------
-// Registro de servicios en el contenedor de dependencias
-// -------------------------------
+// =========================================================================
+// 1. CONFIGURACIÓN DE BLALOR Y SERVICIOS CORE (DEL PROFESOR)
+// =========================================================================
 
-// Se registran los servicios de Razor Components.
-// "AddInteractiveServerComponents" habilita el modo interactivo tipo Blazor Server (SignalR).
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-
- // Servicio HttpClient para consumir la API externa de productos.
- // Se activará más adelante cuando se implemente la conexión a la API.
- builder.Services.AddHttpClient("ApiUsuarios", cliente =>
- {
-     // URL base de la API que expone /api/producto
-     cliente.BaseAddress = new Uri("http://localhost:5031/");
-     // Aquí se pueden agregar encabezados por defecto si se requiere.
- });
-
- builder.Services.AddHttpClient("ApiEntregables", cliente =>
+// Configurar opciones del circuito de Blazor Server (CRUCIAL para rendimiento y reconexión)
+builder.Services.AddServerSideBlazor(options =>
 {
-    cliente.BaseAddress = new Uri("http://localhost:5031/"); // URL de tu API
+    // Desconectar el circuito después de 30 segundos de inactividad
+    options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromSeconds(30);
+    // Intentos de reconexión del cliente
+    options.DisconnectedCircuitMaxRetained = 100;
+    // Tamaño máximo del buffer de JavaScript interop
+    options.JSInteropDefaultCallTimeout = TimeSpan.FromMinutes(1);
+});
+
+// Registrar ServicioAutenticacion y ServicioApiGenerico
+builder.Services.AddScoped<ServicioAutenticacion>();
+
+// NOTA: Si usas ServicioApiGenerico para todas las APIs, podrías eliminar
+// las configuraciones de HttpClient duplicadas, pero las mantendré.
+builder.Services.AddScoped<ServicioApiGenerico>(); 
+
+
+// =========================================================================
+// 2. CONFIGURACIÓN DE HTTP CLIENTS (TUS DEFINICIONES)
+// =========================================================================
+
+// Configuración original del profesor, renombrada para ser más específica si se usa para CRUD genérico
+builder.Services.AddHttpClient("ApiGenerica", cliente =>
+{
+    cliente.BaseAddress = new Uri("http://localhost:5031/");
+});
+
+// Tus configuraciones de HttpClient (Asegúrate de que 'http://localhost:5031/' sea la URL CORRECTA de tu API)
+builder.Services.AddHttpClient("ApiUsuarios", cliente =>
+{
+    cliente.BaseAddress = new Uri("http://localhost:5031/");
+});
+
+builder.Services.AddHttpClient("ApiEntregables", cliente =>
+{
+    cliente.BaseAddress = new Uri("http://localhost:5031/");
 });
 
 builder.Services.AddHttpClient("ApiEstados", cliente =>
 {
-   cliente.BaseAddress = new Uri("http://localhost:5031/"); // URL de tu API
+    cliente.BaseAddress = new Uri("http://localhost:5031/");
 });
 builder.Services.AddHttpClient("ApiTipoProductos", cliente =>
 {
-    cliente.BaseAddress = new Uri("http://localhost:5031/"); // URL de tu API
+    cliente.BaseAddress = new Uri("http://localhost:5031/");
 });
 
 builder.Services.AddHttpClient("ApiTipoResponsables", cliente =>
 {
-    cliente.BaseAddress = new Uri("http://localhost:5031/"); // URL de tu API
+    cliente.BaseAddress = new Uri("http://localhost:5031/");
 });
 
 builder.Services.AddHttpClient("ApiTipoProyectos", cliente =>
 {
-    cliente.BaseAddress = new Uri("http://localhost:5031/"); // URL de tu API
+    cliente.BaseAddress = new Uri("http://localhost:5031/");
 });
 
 builder.Services.AddHttpClient("ApiVariableEstrategicas", cliente =>
 {
-    cliente.BaseAddress = new Uri("http://localhost:5031/"); // URL de tu API
+    cliente.BaseAddress = new Uri("http://localhost:5031/");
 });
+
+
+// =========================================================================
+// 3. CONSTRUIR Y CONFIGURAR MIDDLEWARE
+// =========================================================================
 
 var app = builder.Build();
 
-
 if (!app.Environment.IsDevelopment())
 {
-
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-
-
     app.UseHsts();
 }
 
-
 app.UseHttpsRedirection();
-
-
 app.UseStaticFiles();
 
+// ⬇️ MIDDLEWARE PARA EVITAR CACHÉ (DEL PROFESOR - MUY RECOMENDADO EN DESARROLLO) ⬇️
+app.Use(async (context, next) =>
+{
+    // Agregar headers para evitar caché en TODAS las respuestas
+    context.Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+    context.Response.Headers["Pragma"] = "no-cache";
+    context.Response.Headers["Expires"] = "0";
+    await next();
+});
+// ⬆️ FIN DEL MIDDLEWARE DE CACHÉ ⬆️
 
 app.UseAntiforgery();
 
