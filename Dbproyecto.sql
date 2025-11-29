@@ -15,6 +15,23 @@ CREATE TABLE Usuario (
     Activo BIT NOT NULL DEFAULT 1
 );
 
+CREATE TABLE rol (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    nombre VARCHAR(100) UNIQUE NOT NULL
+);
+
+CREATE TABLE rol_usuario (
+    fkemail NVARCHAR(150) NOT NULL REFERENCES usuario (Email) ON UPDATE CASCADE ON DELETE CASCADE,
+    fkidrol INT NOT NULL REFERENCES rol (id),
+    PRIMARY KEY (fkemail, fkidrol)
+);
+
+CREATE TABLE rutarol (
+    ruta VARCHAR(4000) NOT NULL,
+    rol VARCHAR(100) NOT NULL REFERENCES rol (nombre),
+    PRIMARY KEY (ruta, rol)
+);
+
 -- ===========================================
 -- Tabla: TipoResponsable
 -- ===========================================
@@ -400,3 +417,226 @@ VALUES (1, 'Implementar plataforma de datos centralizada', NULL);
 
 INSERT INTO Meta_Proyecto (IdMeta, IdProyecto, FechaAsociacion)
 VALUES (1, 1, GETDATE());
+
+-- Roles
+INSERT INTO rol (nombre) VALUES 
+('Administrador'),
+('Vendedor'),
+('Cajero'),
+('Contador'),
+('Cliente');
+
+-- Usuarios con roles
+EXEC crear_usuario_con_roles 'admin@correo.com', 'admin123', '[{"fkidrol":1}]';
+EXEC crear_usuario_con_roles 'vendedor1@correo.com', 'vend123', '[{"fkidrol":2},{"fkidrol":3}]';
+EXEC crear_usuario_con_roles 'jefe@correo.com', 'jefe123', '[{"fkidrol":1},{"fkidrol":3},{"fkidrol":4}]';
+EXEC crear_usuario_con_roles 'cliente1@correo.com', 'cli123', '[{"fkidrol":5}]';
+
+-- ==============================================================
+-- PROCEDIMIENTO: Crear usuario con roles (CON TRANSACCIÓN)
+-- ==============================================================
+CREATE OR ALTER PROCEDURE crear_usuario_con_roles
+    @p_email VARCHAR(100),
+    @p_contrasena VARCHAR(100),
+    @p_roles NVARCHAR(MAX)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    DECLARE @ErrorMessage NVARCHAR(4000);
+    DECLARE @ErrorSeverity INT;
+    DECLARE @ErrorState INT;
+    
+    BEGIN TRY
+        BEGIN TRANSACTION;
+        
+        -- Validar que el usuario no exista
+        IF EXISTS (SELECT 1 FROM usuario WHERE email = @p_email)
+        BEGIN
+            THROW 50005, 'El usuario ya existe', 1;
+        END
+        
+        -- Crear usuario
+        INSERT INTO usuario (email, contrasena)
+        VALUES (@p_email, @p_contrasena);
+        
+        -- Insertar roles desde JSON
+        INSERT INTO rol_usuario (fkemail, fkidrol)
+        SELECT 
+            @p_email,
+            fkidrol
+        FROM OPENJSON(@p_roles)
+        WITH (
+            fkidrol INT '$.fkidrol'
+        );
+        
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION;
+        
+        SELECT @ErrorMessage = ERROR_MESSAGE(),
+               @ErrorSeverity = ERROR_SEVERITY(),
+               @ErrorState = ERROR_STATE();
+        
+        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH
+END;
+GO
+
+-- ==============================================================
+-- PROCEDIMIENTO: Actualizar usuario con roles (CON TRANSACCIÓN)
+-- ==============================================================
+CREATE OR ALTER PROCEDURE actualizar_usuario_con_roles
+    @p_email VARCHAR(100),
+    @p_contrasena VARCHAR(100),
+    @p_roles NVARCHAR(MAX)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    DECLARE @ErrorMessage NVARCHAR(4000);
+    DECLARE @ErrorSeverity INT;
+    DECLARE @ErrorState INT;
+    
+    BEGIN TRY
+        BEGIN TRANSACTION;
+        
+        -- Validar que el usuario exista
+        IF NOT EXISTS (SELECT 1 FROM usuario WHERE email = @p_email)
+        BEGIN
+            THROW 50006, 'El usuario no existe', 1;
+        END
+        
+        -- Actualizar contraseña
+        UPDATE usuario
+        SET contrasena = @p_contrasena
+        WHERE email = @p_email;
+        
+        -- Eliminar roles antiguos
+        DELETE FROM rol_usuario WHERE fkemail = @p_email;
+        
+        -- Insertar nuevos roles desde JSON
+        INSERT INTO rol_usuario (fkemail, fkidrol)
+        SELECT 
+            @p_email,
+            fkidrol
+        FROM OPENJSON(@p_roles)
+        WITH (
+            fkidrol INT '$.fkidrol'
+        );
+        
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION;
+        
+        SELECT @ErrorMessage = ERROR_MESSAGE(),
+               @ErrorSeverity = ERROR_SEVERITY(),
+               @ErrorState = ERROR_STATE();
+        
+        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH
+END;
+GO
+
+-- ==============================================================
+-- PROCEDIMIENTO: Eliminar usuario con roles (CON TRANSACCIÓN)
+-- ==============================================================
+CREATE OR ALTER PROCEDURE eliminar_usuario_con_roles
+    @p_email VARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    DECLARE @ErrorMessage NVARCHAR(4000);
+    DECLARE @ErrorSeverity INT;
+    DECLARE @ErrorState INT;
+    
+    BEGIN TRY
+        BEGIN TRANSACTION;
+        
+        -- Validar que el usuario exista
+        IF NOT EXISTS (SELECT 1 FROM usuario WHERE email = @p_email)
+        BEGIN
+            THROW 50006, 'El usuario no existe', 1;
+        END
+        
+        -- Eliminar roles
+        DELETE FROM rol_usuario WHERE fkemail = @p_email;
+        
+        -- Eliminar usuario
+        DELETE FROM usuario WHERE email = @p_email;
+        
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION;
+        
+        SELECT @ErrorMessage = ERROR_MESSAGE(),
+               @ErrorSeverity = ERROR_SEVERITY(),
+               @ErrorState = ERROR_STATE();
+        
+        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH
+END;
+GO
+
+-- ==============================================================
+-- FUNCIÓN: Consultar usuario con roles (retorna JSON)
+-- ==============================================================
+CREATE OR ALTER FUNCTION consultar_usuario_con_roles(@p_email VARCHAR(100))
+RETURNS NVARCHAR(MAX)
+AS
+BEGIN
+    DECLARE @resultado NVARCHAR(MAX);
+    
+    SELECT @resultado = (
+        SELECT 
+            u.email,
+            (
+                SELECT 
+                    r.id AS idrol,
+                    r.nombre
+                FROM rol_usuario ru
+                INNER JOIN rol r ON r.id = ru.fkidrol
+                WHERE ru.fkemail = u.email
+                FOR JSON PATH
+            ) AS roles
+        FROM usuario u
+        WHERE u.email = @p_email
+        FOR JSON PATH, WITHOUT_ARRAY_WRAPPER
+    );
+    
+    RETURN @resultado;
+END;
+GO
+
+-- ==============================================================
+-- FUNCIÓN: Listar usuarios con roles (retorna JSON)
+-- ==============================================================
+CREATE OR ALTER FUNCTION listar_usuarios_con_roles()
+RETURNS NVARCHAR(MAX)
+AS
+BEGIN
+    DECLARE @resultado NVARCHAR(MAX);
+    
+    SELECT @resultado = (
+        SELECT 
+            u.email,
+            (
+                SELECT 
+                    r.id AS idrol,
+                    r.nombre
+                FROM rol_usuario ru
+                INNER JOIN rol r ON r.id = ru.fkidrol
+                WHERE ru.fkemail = u.email
+                FOR JSON PATH
+            ) AS roles
+        FROM usuario u
+        FOR JSON PATH
+    );
+    
+    RETURN ISNULL(@resultado, '[]');
+END;
+GO
